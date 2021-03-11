@@ -1,0 +1,141 @@
+type Budget @model {
+  id: ID!
+  referrals: Int!
+  dailyLogin: Int!
+  purchased: Int!
+  earnWithNetfli: Int!
+  squad: Squad @connection
+  base: Int!
+}
+
+type Performance
+  @model
+  @key(name: "byMatch", fields: ["matchID"])
+  @key(name: "byPlayer", fields: ["playerID"]) {
+  id: ID!
+  minutes: Int!
+  goals: Int
+  assists: Int!
+  yellowCards: Int!
+  redCards: Int!
+  match: Match @connection
+  matchID: ID
+  player: Player @connection
+  playerID: ID
+  shotsOnTarget: Int!
+  offsides: Int!
+  foulsCommitted: Int!
+  cleanSheet: Int!
+  ownGoals: Int!
+  hattricks: Int!
+  totalPoints: Int
+  savedPenalties: Int!
+  missedPenalties: Int!
+}
+
+type Match @model {
+  id: ID!
+  round: String!
+  date: AWSDateTime!
+  homeTeam: NationalTeam! @connection
+  awayTeam: NationalTeam! @connection
+  performances: [Performance] @connection(keyName: "byMatch", fields: ["id"])
+}
+
+type Team @model {
+  id: ID!
+  leagues: [LeagueTeam] @connection(keyName: "byTeam", fields: ["id"])
+  name: String!
+  squads: [Squad] @connection(keyName: "byTeam", fields: ["id"])
+  totalPoints: Int
+}
+
+type User @model {
+  id: ID!
+  phoneNumber: AWSPhone!
+  team: Team @connection
+  referrals: [User] @connection
+}
+
+type League @model {
+  id: ID!
+  teams: [LeagueTeam!] @connection(keyName: "byLeague", fields: ["id"])
+  type: String!
+  password: String
+  name: String!
+}
+
+type Player
+  @model
+  @key(
+    name: "byNationalTeam"
+    fields: ["nationalteamID"]
+    queryField: "playersByNationalTeam"
+  ) {
+  id: ID!
+  price: Int!
+  position: String!
+  nationalteamID: ID
+  squads: [SquadPlayer] @connection(keyName: "byPlayer", fields: ["id"])
+  firstName: String!
+  lastName: String!
+  nationalTeam: NationalTeam! @connection
+  performances: [Performance] @connection(keyName: "byPlayer", fields: ["id"])
+  suspended: Boolean!
+  injured: Boolean!
+  removedFromSquad: Boolean!
+  totalGoals: Int
+  totalAssists: Int
+  totalYellowCards: Int
+  totalRedCards: Int
+  totalShotsOnTarget: Int
+  totalOffsides: Int
+  totalFoulsCommitted: Int
+  totalOwnGoals: Int
+  totalHattricks: Int
+  totalPoints: Int
+  totalCleanSheets: Int
+}
+
+type NationalTeam @model {
+  id: ID!
+  active: Boolean!
+  players: [Player!] @connection(keyName: "byNationalTeam", fields: ["id"])
+  name: String!
+}
+
+type Squad @model @key(name: "byTeam", fields: ["teamID"]) {
+  id: ID!
+  players: [SquadPlayer] @connection(keyName: "bySquad", fields: ["id"])
+  tactics: String!
+  value: Int
+  captain: Player @connection
+  viceCaptain: Player @connection
+  teamID: ID
+  team: Team @connection
+  round: String!
+  budget: Budget @connection
+  totalPoints: Int
+}
+
+type LeagueTeam
+  @model(queries: null)
+  @key(name: "byLeague", fields: ["leagueID", "teamID"])
+  @key(name: "byTeam", fields: ["teamID", "leagueID"]) {
+  id: ID!
+  leagueID: ID!
+  teamID: ID!
+  league: League! @connection(fields: ["leagueID"])
+  team: Team! @connection(fields: ["teamID"])
+}
+
+type SquadPlayer
+  @model(queries: null)
+  @key(name: "bySquad", fields: ["squadID", "playerID"])
+  @key(name: "byPlayer", fields: ["playerID", "squadID"]) {
+  id: ID!
+  squadID: ID!
+  playerID: ID!
+  squad: Squad! @connection(fields: ["squadID"])
+  player: Player! @connection(fields: ["playerID"])
+}
