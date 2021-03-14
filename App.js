@@ -1,8 +1,14 @@
+import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Text, StatusBar} from 'react-native';
+import {StyleSheet, StatusBar, PixelRatio} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import {NavigationContainer} from '@react-navigation/native';
 import Amplify, {Auth} from 'aws-amplify';
 import config from './src/aws-exports';
+
+import AuthStack from './src/navigation/AuthStack';
+import BottomTabNavigator from './src/navigation/BottomTabNavigator';
+
 Amplify.configure(config);
 
 const App = () => {
@@ -20,23 +26,24 @@ const App = () => {
   // check if user logged in
   useEffect(() => {
     checkUser();
+    console.log(PixelRatio.get());
+    console.log(PixelRatio.getPixelSizeForLayoutSize(100));
   }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       SplashScreen.hide();
-    }, 1000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <>
       <StatusBar barStyle="default" />
-      <SafeAreaView style={styles.container}>
-        <View style={styles.container}>
-          <Text style={styles.text}>False9 App</Text>
-        </View>
-      </SafeAreaView>
+
+      <NavigationContainer>
+        {currentUser ? <BottomTabNavigator /> : <AuthStack />}
+      </NavigationContainer>
     </>
   );
 };

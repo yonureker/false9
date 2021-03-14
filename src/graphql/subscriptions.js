@@ -67,6 +67,7 @@ export const onCreateBudget = /* GraphQL */ `
         teamID
         team {
           id
+          phoneNumber
           name
           totalPoints
           createdAt
@@ -159,6 +160,7 @@ export const onUpdateBudget = /* GraphQL */ `
         teamID
         team {
           id
+          phoneNumber
           name
           totalPoints
           createdAt
@@ -251,6 +253,7 @@ export const onDeleteBudget = /* GraphQL */ `
         teamID
         team {
           id
+          phoneNumber
           name
           totalPoints
           createdAt
@@ -704,6 +707,7 @@ export const onCreateTeam = /* GraphQL */ `
   subscription OnCreateTeam {
     onCreateTeam {
       id
+      phoneNumber
       leagues {
         items {
           id
@@ -729,6 +733,17 @@ export const onCreateTeam = /* GraphQL */ `
         nextToken
       }
       totalPoints
+      referrals {
+        items {
+          id
+          phoneNumber
+          name
+          totalPoints
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -738,6 +753,7 @@ export const onUpdateTeam = /* GraphQL */ `
   subscription OnUpdateTeam {
     onUpdateTeam {
       id
+      phoneNumber
       leagues {
         items {
           id
@@ -763,6 +779,17 @@ export const onUpdateTeam = /* GraphQL */ `
         nextToken
       }
       totalPoints
+      referrals {
+        items {
+          id
+          phoneNumber
+          name
+          totalPoints
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -772,6 +799,7 @@ export const onDeleteTeam = /* GraphQL */ `
   subscription OnDeleteTeam {
     onDeleteTeam {
       id
+      phoneNumber
       leagues {
         items {
           id
@@ -797,97 +825,12 @@ export const onDeleteTeam = /* GraphQL */ `
         nextToken
       }
       totalPoints
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
-      id
-      phoneNumber
-      team {
-        id
-        leagues {
-          nextToken
-        }
-        name
-        squads {
-          nextToken
-        }
-        totalPoints
-        createdAt
-        updatedAt
-      }
       referrals {
         items {
           id
           phoneNumber
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
-      id
-      phoneNumber
-      team {
-        id
-        leagues {
-          nextToken
-        }
-        name
-        squads {
-          nextToken
-        }
-        totalPoints
-        createdAt
-        updatedAt
-      }
-      referrals {
-        items {
-          id
-          phoneNumber
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
-      id
-      phoneNumber
-      team {
-        id
-        leagues {
-          nextToken
-        }
-        name
-        squads {
-          nextToken
-        }
-        totalPoints
-        createdAt
-        updatedAt
-      }
-      referrals {
-        items {
-          id
-          phoneNumber
+          name
+          totalPoints
           createdAt
           updatedAt
         }
@@ -1387,6 +1330,7 @@ export const onCreateSquad = /* GraphQL */ `
       teamID
       team {
         id
+        phoneNumber
         leagues {
           nextToken
         }
@@ -1395,6 +1339,9 @@ export const onCreateSquad = /* GraphQL */ `
           nextToken
         }
         totalPoints
+        referrals {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -1518,6 +1465,7 @@ export const onUpdateSquad = /* GraphQL */ `
       teamID
       team {
         id
+        phoneNumber
         leagues {
           nextToken
         }
@@ -1526,6 +1474,9 @@ export const onUpdateSquad = /* GraphQL */ `
           nextToken
         }
         totalPoints
+        referrals {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -1649,6 +1600,7 @@ export const onDeleteSquad = /* GraphQL */ `
       teamID
       team {
         id
+        phoneNumber
         leagues {
           nextToken
         }
@@ -1657,6 +1609,9 @@ export const onDeleteSquad = /* GraphQL */ `
           nextToken
         }
         totalPoints
+        referrals {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -1706,6 +1661,7 @@ export const onCreateLeagueTeam = /* GraphQL */ `
       }
       team {
         id
+        phoneNumber
         leagues {
           nextToken
         }
@@ -1714,6 +1670,9 @@ export const onCreateLeagueTeam = /* GraphQL */ `
           nextToken
         }
         totalPoints
+        referrals {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -1741,6 +1700,7 @@ export const onUpdateLeagueTeam = /* GraphQL */ `
       }
       team {
         id
+        phoneNumber
         leagues {
           nextToken
         }
@@ -1749,6 +1709,9 @@ export const onUpdateLeagueTeam = /* GraphQL */ `
           nextToken
         }
         totalPoints
+        referrals {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -1776,6 +1739,7 @@ export const onDeleteLeagueTeam = /* GraphQL */ `
       }
       team {
         id
+        phoneNumber
         leagues {
           nextToken
         }
@@ -1784,6 +1748,9 @@ export const onDeleteLeagueTeam = /* GraphQL */ `
           nextToken
         }
         totalPoints
+        referrals {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -1856,6 +1823,7 @@ export const onCreateSquadPlayer = /* GraphQL */ `
         teamID
         team {
           id
+          phoneNumber
           name
           totalPoints
           createdAt
@@ -1982,6 +1950,7 @@ export const onUpdateSquadPlayer = /* GraphQL */ `
         teamID
         team {
           id
+          phoneNumber
           name
           totalPoints
           createdAt
@@ -2108,6 +2077,7 @@ export const onDeleteSquadPlayer = /* GraphQL */ `
         teamID
         team {
           id
+          phoneNumber
           name
           totalPoints
           createdAt

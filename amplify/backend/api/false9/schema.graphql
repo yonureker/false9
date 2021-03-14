@@ -44,17 +44,12 @@ type Match @model {
 
 type Team @model {
   id: ID!
+  phoneNumber: AWSPhone!
   leagues: [LeagueTeam] @connection(keyName: "byTeam", fields: ["id"])
   name: String!
   squads: [Squad] @connection(keyName: "byTeam", fields: ["id"])
-  totalPoints: Int
-}
-
-type User @model {
-  id: ID!
-  phoneNumber: AWSPhone!
-  team: Team @connection
-  referrals: [User] @connection
+  totalPoints: Int!
+  referrals: [Team] @connection
 }
 
 type League @model {

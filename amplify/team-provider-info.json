@@ -13,7 +13,13 @@
     },
     "categories": {
       "auth": {
-        "false92b4cd8ed": {}
+        "false9Auth": {}
+      },
+      "function": {
+        "false9AuthPostConfirmation": {
+          "deploymentBucketName": "amplify-false9-dev-132531-deployment",
+          "s3Key": "amplify-builds/false9AuthPostConfirmation-3133354f5034644e7151-build.zip"
+        }
       }
     }
   }

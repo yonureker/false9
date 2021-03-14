@@ -67,6 +67,7 @@ export const getBudget = /* GraphQL */ `
         teamID
         team {
           id
+          phoneNumber
           name
           totalPoints
           createdAt
@@ -367,6 +368,7 @@ export const getTeam = /* GraphQL */ `
   query GetTeam($id: ID!) {
     getTeam(id: $id) {
       id
+      phoneNumber
       leagues {
         items {
           id
@@ -392,6 +394,17 @@ export const getTeam = /* GraphQL */ `
         nextToken
       }
       totalPoints
+      referrals {
+        items {
+          id
+          phoneNumber
+          name
+          totalPoints
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -406,70 +419,15 @@ export const listTeams = /* GraphQL */ `
     listTeams(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        leagues {
-          nextToken
-        }
-        name
-        squads {
-          nextToken
-        }
-        totalPoints
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      phoneNumber
-      team {
-        id
-        leagues {
-          nextToken
-        }
-        name
-        squads {
-          nextToken
-        }
-        totalPoints
-        createdAt
-        updatedAt
-      }
-      referrals {
-        items {
-          id
-          phoneNumber
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
         phoneNumber
-        team {
-          id
-          name
-          totalPoints
-          createdAt
-          updatedAt
+        leagues {
+          nextToken
         }
+        name
+        squads {
+          nextToken
+        }
+        totalPoints
         referrals {
           nextToken
         }
@@ -796,6 +754,7 @@ export const getSquad = /* GraphQL */ `
       teamID
       team {
         id
+        phoneNumber
         leagues {
           nextToken
         }
@@ -804,6 +763,9 @@ export const getSquad = /* GraphQL */ `
           nextToken
         }
         totalPoints
+        referrals {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -899,6 +861,7 @@ export const listSquads = /* GraphQL */ `
         teamID
         team {
           id
+          phoneNumber
           name
           totalPoints
           createdAt
