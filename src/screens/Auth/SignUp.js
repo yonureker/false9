@@ -1,82 +1,71 @@
-import React, {useState} from 'react';
-import {
-  ImageBackground,
-  Text,
-  View,
-  Image,
-  TextInput,
-  Pressable,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ImageBackground, Text, View, Image, Pressable} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
-import {Auth} from 'aws-amplify';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const backgroundImage = require('../../../assets/false9_background.png');
 const logo = require('../../../assets/false9_logo.png');
 
-const SignUp = ({navigation}) => {
-  const [username, setUsername] = useState(null);
-  const [phone_number, setPhoneNumber] = useState(null);
-  const [password, setPassword] = useState('12345678');
-
-  const signUpUser = async () => {
-    try {
-      const {user} = await Auth.signUp({
-        username,
-        password,
-        attributes: {
-          phone_number, // optional - E.164 number convention
-          // other custom attributes
-        },
-      });
-
-      navigation.navigate('Verify', {
-        phoneNumber: phone_number,
-        username: username,
-      });
-      console.log(user);
-    } catch (error) {
-      console.log('error signing up:', error);
-    }
-  };
+const SignUp = ({navigation}) =>
 
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
-      <View style={[styles.container, styles.logo]}>
-        <Image source={logo} />
+      <View style={styles.logoContainer}>
+        <Image source={logo} style={styles.appLogo} resizeMode="contain" />
       </View>
-      <View style={[styles.container, styles.form]}>
-        <View style={styles.textInputContainer}>
-          <TextInput
-            placeholder="Enter team name"
-            onChangeText={(text) => setUsername(text)}
-            style={styles.textInput}
+      <View style={styles.form}>
+        <Pressable
+          style={[styles.textInputContainer, styles.appleColor]}
+          onPress={() => Auth.federatedSignIn({provider: 'SignInWithApple'})}>
+          <Icon name="apple" size={30} color="white" style={styles.icon} />
+          <Text style={styles.textInput}>Sign Up with Apple</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.textInputContainer, styles.facebookColor]}
+          onPress={() => Auth.federatedSignIn({provider: 'Facebook'})}>
+          <Icon
+            name="facebook-square"
+            size={30}
+            color="white"
+            style={styles.icon}
           />
-        </View>
-        <View style={styles.textInputContainer}>
-          <TextInput
-            placeholder="Enter phone number"
-            onChangeText={(number) => setPhoneNumber(number)}
-            style={styles.textInput}
-            keyboardType="numeric"
-          />
-        </View>
+          <Text style={styles.textInput}>Sign Up with Facebook</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.textInputContainer, styles.googleColor]}
+          onPress={() => Auth.federatedSignIn({provider: 'Google'})}>
+          <Icon name="google" size={30} color="white" style={styles.icon} />
+          <Text style={styles.textInput}>Sign Up with Google</Text>
+        </Pressable>
         <View>
           <Text style={styles.smallText}>
-            By signing up, you agree to our terms & conditions, competition
-            rules and acknowledge our privacy notice.
+            By signing up, you agree to our{' '}
+            <Text style={styles.textWithUnderline}>terms & conditions</Text>,{' '}
+            <Text style={styles.textWithUnderline}>competition rules</Text> and
+            acknowledge our{' '}
+            <Text style={styles.textWithUnderline}>privacy notice</Text>.
           </Text>
         </View>
         <View style={styles.button}>
-          <Pressable onPress={() => signUpUser()}>
+          <Pressable onPress={() => Auth.federatedSignIn({provider: 'Google'})}>
             <Text style={styles.buttonText}>Continue</Text>
           </Pressable>
         </View>
         <View>
-          <Text style={styles.smallText}>Already have an account? Sign In</Text>
+          <Text style={styles.smallText}>
+            Already have an account?{' '}
+            <Text
+              style={styles.textWithUnderline}
+              onPress={() => navigation.navigate('SignIn')}>
+              Sign In
+            </Text>
+          </Text>
         </View>
       </View>
 
-      <View style={styles.footer}></View>
+      <View style={styles.footer}>
+        <Text onPress={() => checkUser()}>Check user</Text>
+      </View>
     </ImageBackground>
   );
 };
@@ -89,21 +78,28 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  logo: {
+  logoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 2,
   },
+  appLogo: {
+    width: '250@ms',
+    height: '100@ms',
+  },
   form: {
-    flex: 4,
+    flex: 3.5,
     justifyContent: 'space-between',
     alignItems: 'center',
     maxWidth: '300@ms',
     maxHeight: '300@ms',
   },
   textInputContainer: {
-    height: '50@ms',
+    height: '40@ms',
     width: '300@ms',
     backgroundColor: '#7ABDC9',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     borderRadius: 10,
   },
@@ -121,7 +117,7 @@ const styles = ScaledSheet.create({
     fontSize: '16@ms',
   },
   footer: {
-    flex: 1,
+    flex: 0.5,
   },
   smallText: {
     color: 'white',
@@ -131,8 +127,31 @@ const styles = ScaledSheet.create({
   },
   textInput: {
     fontSize: '16@ms',
-    textAlign: 'center',
+    textAlign: 'left',
     fontFamily: 'LexendDeca-Regular',
-    width: '100%',
+    paddingTop: 0,
+    paddingBottom: 0,
+    flex: 1,
+    minWidth: '180@ms',
+    color: 'white',
+  },
+  textWithUnderline: {
+    textDecorationLine: 'underline',
+  },
+  icon: {
+    paddingLeft: '10@ms',
+    paddingRight: '10@ms',
+  },
+  countryPicker: {
+    paddingRight: '5@ms',
+  },
+  facebookColor: {
+    backgroundColor: '#3b5998',
+  },
+  googleColor: {
+    backgroundColor: '#dd4b39',
+  },
+  appleColor: {
+    backgroundColor: '#000',
   },
 });

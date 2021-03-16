@@ -4,6 +4,9 @@
  *
  * @format
  */
+
+const blacklist = require('metro-config/src/defaults/blacklist'); // on top
+
 module.exports = {
   transformer: {
     getTransformOptions: async () => ({
@@ -12,5 +15,8 @@ module.exports = {
         inlineRequires: false,
       },
     }),
+  },
+  resolver: {
+    blacklistRE: blacklist([/#current-cloud-backend\/.*/]), //add within module export
   },
 };
