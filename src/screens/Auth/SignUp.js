@@ -3,10 +3,11 @@ import {ImageBackground, Text, View, Image, Pressable} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
+
 const backgroundImage = require('../../../assets/false9_background.png');
 const logo = require('../../../assets/false9_logo.png');
 
-const SignUp = ({navigation}) =>
+const SignUp = ({navigation}) => {
 
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
@@ -21,19 +22,12 @@ const SignUp = ({navigation}) =>
           <Text style={styles.textInput}>Sign Up with Apple</Text>
         </Pressable>
         <Pressable
-          style={[styles.textInputContainer, styles.facebookColor]}
-          onPress={() => Auth.federatedSignIn({provider: 'Facebook'})}>
-          <Icon
-            name="facebook-square"
-            size={30}
-            color="white"
-            style={styles.icon}
-          />
-          <Text style={styles.textInput}>Sign Up with Facebook</Text>
-        </Pressable>
-        <Pressable
           style={[styles.textInputContainer, styles.googleColor]}
-          onPress={() => Auth.federatedSignIn({provider: 'Google'})}>
+          onPress={() =>
+            onGoogleButtonPress().then(() =>
+              console.log('Signed in with Google!'),
+            )
+          }>
           <Icon name="google" size={30} color="white" style={styles.icon} />
           <Text style={styles.textInput}>Sign Up with Google</Text>
         </Pressable>

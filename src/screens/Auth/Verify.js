@@ -8,33 +8,11 @@ import {
   Pressable,
 } from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
-import {Auth} from 'aws-amplify';
 
 const backgroundImage = require('../../../assets/false9_background.png');
 const logo = require('../../../assets/false9_logo.png');
 
 const Verify = ({route, navigation}) => {
-  const [verificationCode, setVerificationCode] = useState(null);
-
-  const {phoneNumber, username} = route.params;
-
-  const confirmSignUp = async () => {
-    try {
-      await Auth.confirmSignUp(username, verificationCode);
-    } catch (error) {
-      console.log('error signing up:', error);
-    }
-  };
-
-  const resendConfirmationCode = async () => {
-    try {
-      await Auth.resendSignUp(username);
-      console.log('code resent successfully');
-    } catch (err) {
-      console.log('error resending code: ', err);
-    }
-  };
-
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
       <View style={[styles.container, styles.logo]}>
@@ -43,13 +21,13 @@ const Verify = ({route, navigation}) => {
       <View style={[styles.container, styles.form]}>
         <View>
           <Text style={styles.smallText}>
-            Please enter the verification code sent to {phoneNumber}
+            Please enter the verification code sent to
           </Text>
         </View>
         <View style={styles.textInputContainer}>
           <TextInput
             placeholder="Enter verification code"
-            onChangeText={(code) => setVerificationCode(code)}
+            // onChangeText={(code) => setVerificationCode(code)}
             style={styles.textInput}
             keyboardType="numeric"
           />
@@ -57,18 +35,18 @@ const Verify = ({route, navigation}) => {
         <View>
           <Text style={styles.smallText}>
             Didn't receive the code?{' '}
-            <Text
+            {/* <Text
               onPress={() => resendConfirmationCode()}
               style={styles.textWithUnderline}>
               Resend code
-            </Text>
+            </Text> */}
             .
           </Text>
         </View>
         <View style={styles.button}>
-          <Pressable onPress={() => confirmSignUp()}>
+          {/* <Pressable onPress={() => confirmSignUp()}>
             <Text style={styles.buttonText}>Continue</Text>
-          </Pressable>
+          </Pressable> */}
         </View>
         <View>
           <Text style={styles.smallText}>
@@ -83,7 +61,7 @@ const Verify = ({route, navigation}) => {
         </View>
       </View>
 
-      <View style={styles.footer}></View>
+      <View style={styles.footer} />
     </ImageBackground>
   );
 };

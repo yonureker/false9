@@ -8,35 +8,13 @@ import AuthStack from './src/navigation/AuthStack';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 
 const App = () => {
-  const [currentUser, setCurrentUser] = useState(null);
-
-  const checkUser = async () => {
-    try {
-      const user = await Auth.currentAuthenticatedUser();
-      setCurrentUser(user);
-    } catch (error) {
-      // do nothing
-    }
-  };
-
-  // check if user logged in
-  useEffect(() => {
-    checkUser();
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      SplashScreen.hide();
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
-
+  const [user, setUser] = useState();
   return (
     <>
       <StatusBar barStyle="default" />
 
       <NavigationContainer>
-        {currentUser ? <BottomTabNavigator /> : <AuthStack />}
+        {user ? <BottomTabNavigator /> : <AuthStack />}
       </NavigationContainer>
     </>
   );

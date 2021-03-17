@@ -1,4 +1,9 @@
 PODS:
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.63.4)
@@ -19,6 +24,18 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - GoogleSignIn (5.0.2):
+    - AppAuth (~> 1.2)
+    - GTMAppAuth (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GTMAppAuth (1.1.0):
+    - AppAuth/Core (~> 1.4)
+    - GTMSessionFetcher (~> 1.4)
+  - GTMSessionFetcher (1.5.0):
+    - GTMSessionFetcher/Full (= 1.5.0)
+  - GTMSessionFetcher/Core (1.5.0)
+  - GTMSessionFetcher/Full (1.5.0):
+    - GTMSessionFetcher/Core (= 1.5.0)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -251,15 +268,14 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - RNAWSCognito (4.5.14):
-    - React-Core
   - RNCMaskedView (0.1.10):
     - React
   - RNCPicker (1.9.12):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNInAppBrowser (3.5.1):
+  - RNGoogleSignin (5.0.0):
+    - GoogleSignIn (~> 5.0.0)
     - React-Core
   - RNReanimated (2.0.0):
     - DoubleConversion
@@ -327,11 +343,10 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
+  - "RNGoogleSignin (from `../node_modules/@react-native-community/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -339,7 +354,11 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - boost-for-react-native
+    - GoogleSignIn
+    - GTMAppAuth
+    - GTMSessionFetcher
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -398,16 +417,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  RNAWSCognito:
-    :path: "../node_modules/amazon-cognito-identity-js"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNInAppBrowser:
-    :path: "../node_modules/react-native-inappbrowser-reborn"
+  RNGoogleSignin:
+    :path: "../node_modules/@react-native-community/google-signin"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -418,12 +435,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
+  GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
+  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -447,16 +468,15 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  RNAWSCognito: 9325a44b538f514187b55a513efb9d3090de68a8
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: b1e22287e5feb38fb10cac877753b924ba1c05d1
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNInAppBrowser: 48b95ba7a4eaff5cc223bca338d3e319561dbd1b
+  RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
   RNReanimated: 5231286440b796e09df3bfa5c1b12b02bfe07664
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 55bd5b29ae25aeb54f1925a934682c31341a644b
+PODFILE CHECKSUM: f6ddf7b31877e90b4c1f398ba367b451510e32a2
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1
