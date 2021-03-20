@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SignUp from '../screens/Auth/SignUp';
 import SignIn from '../screens/Auth/SignIn';
 import Verify from '../screens/Auth/Verify';
+import Squad from '../screens/BottomTab/Squad';
 
 const Stack = createStackNavigator();
 
@@ -14,14 +15,12 @@ const headerStyle = {
   headerTitleAlign: 'center',
 };
 
-const AuthStack = () => {
+const SquadStack = () => {
   return (
-    <Stack.Navigator initialRouteName="SignUp" screenOptions={headerStyle}>
-      <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="SignIn" component={SignIn} />
-      <Stack.Screen name="Verify" component={Verify} />
+    <Stack.Navigator initialRouteName="Squad" screenOptions={headerStyle}>
+      <Stack.Screen name="Squad" component={Squad} />
     </Stack.Navigator>
   );
 };
 
-export default AuthStack;
+export default SquadStack;

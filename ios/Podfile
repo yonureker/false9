@@ -8,6 +8,13 @@ target 'False9' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  # add pods for desired Firebase products
+  # https://firebase.google.com/docs/ios/setup#available-pods
+  pod 'Firebase/Auth'
+
+  # facebook auth
+  pod 'FBSDKLoginKit'
+
 
   target 'False9Tests' do
     inherit! :complete
@@ -32,3 +39,4 @@ target 'False9-tvOS' do
     # Pods for testing
   end
 end
+

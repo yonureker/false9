@@ -2,12 +2,56 @@ import React, {useEffect, useState} from 'react';
 import {ImageBackground, Text, View, Image, Pressable} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-community/google-signin';
+import {LoginManager, AccessToken} from 'react-native-fbsdk';
 
+GoogleSignin.configure({
+  webClientId:
+    '721218036146-gtqfjiflqvvo1r2h2ha9r96ecp1s4te5.apps.googleusercontent.com',
+});
 
 const backgroundImage = require('../../../assets/false9_background.png');
 const logo = require('../../../assets/false9_logo.png');
 
 const SignUp = ({navigation}) => {
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
+
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
 
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
@@ -20,6 +64,16 @@ const SignUp = ({navigation}) => {
           onPress={() => Auth.federatedSignIn({provider: 'SignInWithApple'})}>
           <Icon name="apple" size={30} color="white" style={styles.icon} />
           <Text style={styles.textInput}>Sign Up with Apple</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.textInputContainer, styles.facebookColor]}
+          onPress={() =>
+            onFacebookButtonPress().then(() =>
+              console.log('Signed in with Facebook!'),
+            )
+          }>
+          <Icon name="facebook" size={30} color="white" style={styles.icon} />
+          <Text style={styles.textInput}>Sign Up with Facebook</Text>
         </Pressable>
         <Pressable
           style={[styles.textInputContainer, styles.googleColor]}
@@ -57,9 +111,7 @@ const SignUp = ({navigation}) => {
         </View>
       </View>
 
-      <View style={styles.footer}>
-        <Text onPress={() => checkUser()}>Check user</Text>
-      </View>
+      <View style={styles.footer}></View>
     </ImageBackground>
   );
 };
