@@ -1,54 +1,88 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ImageBackground,
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ImageBackground, Pressable, Text, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import FixturesModal from '../../components/FixturesModal';
 import {ScaledSheet} from 'react-native-size-matters';
+import PlayerSelection from '../../components/Squad/Player';
+import Bench from '../../components/Squad/Bench';
 
 const backgroundImage = require('../../../assets/soccer_field.png');
 
-const Squad = () => {
-  const [fixturesModalVisible, setFixturesModalVisible] = useState(false);
+const Squad = ({navigation}) => {
+  const [dropDownVisible, setDropDownVisible] = useState(false);
+  const [formation, setFormation] = useState('4 - 4 - 2');
+  // const [goalkeepers, setGoalkeepers] = useState([{}]);
+  const [defenders, setDefenders] = useState([{}, {}, {}, {}]);
+  const [midfielders, setMidfielders] = useState([{}, {}, {}, {}]);
+  const [forwards, setForwards] = useState([{}, {}]);
 
-  const tacticsOptions = [
-    '4-4-2',
-    '4-5-1',
-    '4-3-3',
-    '3-5-2',
-    '3-4-3',
-    '5-4-1',
-    '5-3-2',
+  const formationOptions = [
+    '3 - 4 - 3',
+    '3 - 5 - 2',
+    '4 - 3 - 3',
+    '4 - 4 - 2',
+    '4 - 5 - 1',
+    '5 - 3 - 2',
+    '5 - 4 - 1',
   ];
+
+  const updateFormation = (text) => {
+    setFormation(text);
+    setDropDownVisible(!dropDownVisible);
+  };
+
+  useEffect(() => {
+    const mappedFormation = formation.split(' - ');
+
+    setDefenders(Array(Number(mappedFormation[0])).fill({}));
+    setMidfielders(Array(Number(mappedFormation[1])).fill({}));
+    setForwards(Array(Number(mappedFormation[2])).fill({}));
+  }, [formation]);
 
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
-      <View style={styles.container}>
-        <View style={styles.tacticsContainer}>
-          <Text style={styles.tacticsText}>Tactics</Text>
-        </View>
-        <Pressable
-          onPress={() =>
-            auth()
-              .signOut()
-              .then(() => console.log('User signed out!'))
-          }>
-          <Text>Sign Out</Text>
+      <View style={styles.tacticsContainer}>
+        <Pressable onPress={() => setDropDownVisible(!dropDownVisible)}>
+          <Text style={styles.tacticsText}>Formation</Text>
         </Pressable>
-        <Pressable onPress={() => setFixturesModalVisible(true)}>
-          <Text>Fixtures</Text>
-        </Pressable>
-        <View style={styles.benchContainer}></View>
-        {fixturesModalVisible && (
-          <FixturesModal modalVisible={fixturesModalVisible} />
-        )}
+        {dropDownVisible &&
+          formationOptions.map((elem, index) => (
+            <Pressable onPress={() => updateFormation(elem)} key={index}>
+              <Text style={styles.tacticsText}>{elem}</Text>
+            </Pressable>
+          ))}
       </View>
+      <Pressable
+        style={styles.addBudgetContainer}
+        onPress={() => navigation.navigate('Budget')}>
+        <Text style={styles.tacticsText}>Add Budget</Text>
+      </Pressable>
+      <Pressable
+        onPress={() =>
+          auth()
+            .signOut()
+            .then(() => console.log('User signed out!'))
+        }>
+        <Text>Sign Out</Text>
+      </Pressable>
+      <View style={{flexDirection: 'row', flex: 1}}>
+        <PlayerSelection />
+      </View>
+      <View style={styles.playerRow}>
+        {defenders.map((defender, index) => (
+          <PlayerSelection key={index} />
+        ))}
+      </View>
+      <View style={styles.playerRow}>
+        {midfielders.map((midfielder, index) => (
+          <PlayerSelection key={index} />
+        ))}
+      </View>
+      <View style={styles.playerRow}>
+        {forwards.map((forward, index) => (
+          <PlayerSelection key={index} />
+        ))}
+      </View>
+      <Bench />
     </ImageBackground>
   );
 };
@@ -58,27 +92,38 @@ export default Squad;
 const styles = ScaledSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
+  },
+  playerRow: {
+    flexDirection: 'row',
+    flex: 1,
+    alignSelf: 'stretch',
+    justifyContent: 'space-evenly',
   },
   tacticsContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
     backgroundColor: '#C4C4C4',
-    width: '200@ms',
-    borderBottomLeftRadius: '10@ms',
     borderBottomRightRadius: '10@ms',
+    zIndex: 99,
+  },
+  addBudgetContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: '#C4C4C4',
+    borderBottomLeftRadius: '10@ms',
   },
   tacticsText: {
-    padding: '5@ms',
-  },
-  benchContainer: {
-    height: '100@ms',
-    width: '100%',
-    backgroundColor: '#ECECEC',
-    borderTopLeftRadius: '10@ms',
-    borderTopRightRadius: '10@ms',
-    position: 'absolute',
-    bottom: 0,
+    paddingHorizontal: '20@s',
+    paddingVertical: '2@ms',
+    fontSize: '12@s',
+    fontFamily: 'LexendDeca-Regular',
   },
 });

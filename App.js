@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, StatusBar} from 'react-native';
+import {SafeAreaView, StatusBar} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -13,7 +13,6 @@ const App = () => {
 
   function onAuthStateChanged(user) {
     setUser(user);
-    console.log(user);
   }
 
   useEffect(() => {
@@ -28,23 +27,13 @@ const App = () => {
   return (
     <>
       <StatusBar barStyle="default" />
-
-      <NavigationContainer>
-        {user ? <BottomTabNavigator /> : <AuthStack />}
-      </NavigationContainer>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#1098AE'}}>
+        <NavigationContainer>
+          {user ? <BottomTabNavigator /> : <AuthStack />}
+        </NavigationContainer>
+      </SafeAreaView>
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontFamily: 'LexendDeca-Regular',
-  },
-});
 
 export default App;
