@@ -55,5 +55,5 @@ import React from 'react';
 
 export default function Flag(props) {
   const CountryFlag = flags[props.country];
-  return <CountryFlag width={scale(25)} height={scale(25)} />;
+  return <CountryFlag width={props.width} height={props.height} />;
 }

@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SignUp from '../screens/Auth/SignUp';
 import SignIn from '../screens/Auth/SignIn';
 import Verify from '../screens/Auth/Verify';
+import PhoneAuth from '../screens/Auth/PhoneAuth';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ const AuthStack = () => {
   return (
     <Stack.Navigator initialRouteName="SignUp" screenOptions={headerStyle}>
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="PhoneAuth" component={PhoneAuth} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="Verify" component={Verify} />
     </Stack.Navigator>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Text, View} from 'react-native';
-import {ScaledSheet} from 'react-native-size-matters';
+import {scale, ScaledSheet} from 'react-native-size-matters';
 import firestore from '@react-native-firebase/firestore';
 import Flag from '../util/Flag';
 
@@ -26,8 +26,8 @@ const Fixtures = () => {
 
   if (fixtures === null) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" />
+      <View style={styles.fixturesContainer}>
+        <ActivityIndicator size="large" color="black" />
       </View>
     );
   }
@@ -44,13 +44,21 @@ const Fixtures = () => {
               <Text style={styles.teamNameText}>{match.homeTeam}</Text>
             </View>
             <View style={styles.flagContainer}>
-              <Flag country={match.homeTeam} />
+              <Flag
+                country={match.homeTeam}
+                width={scale(30)}
+                height={scale(30)}
+              />
             </View>
             <View style={styles.dashContainer}>
               <Text style={styles.teamNameText}>-</Text>
             </View>
             <View style={styles.flagContainer}>
-              <Flag country={match.awayTeam} />
+              <Flag
+                country={match.awayTeam}
+                width={scale(30)}
+                height={scale(30)}
+              />
             </View>
             <View style={styles.awayTeamNameContainer}>
               <Text style={styles.teamNameText}>{match.awayTeam}</Text>

@@ -23,7 +23,7 @@ const BudgetItem = (props) => {
           styles.container,
           {borderRightWidth: 3, borderRightColor: '#DDDDDD'},
         ]}>
-        <AntDesign size={25} name="adduser" />
+        <AntDesign size={45} name="adduser" />
       </View>
       <View style={{flex: 5}}>
         <View
@@ -56,7 +56,7 @@ const BudgetItem = (props) => {
                   color: 'white',
                   alignSelf: 'center',
                   fontFamily: 'LexendDeca-Regular',
-                  fontSize: 12
+                  fontSize: scale(12)
                 }}>
                 {buttonText}
               </Text>
@@ -78,11 +78,11 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontFamily: 'LexendDeca-Regular',
-    fontSize: 14,
+    fontSize: scale(12),
   },
   smallItemText: {
     fontFamily: 'LexendDeca-Regular',
     color: 'gray',
-    fontSize: 12,
+    fontSize: scale(10),
   },
 });

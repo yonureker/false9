@@ -60,9 +60,10 @@ const fixtureData = [
 const writeFixtures = () => {
   fixtureData.map(async (round) => {
     try {
-      await firestore().collection('fixtures').doc(round.matchday).set(round.data);
-
-      console.log('file written to firestore');
+      await firestore()
+        .collection('fixtures')
+        .doc(round.matchday)
+        .set(round.data);
     } catch (error) {
       console.log();
     }

@@ -16,7 +16,7 @@ const SignIn = ({navigation}) => {
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
       <View style={[styles.container, styles.logo]}>
-        <Image source={logo} />
+        <Image source={logo} style={styles.appLogo} />
       </View>
       <View style={[styles.container, styles.form]}>
         <View>
@@ -30,7 +30,6 @@ const SignIn = ({navigation}) => {
             keyboardType="numeric"
           />
         </View>
-        <View></View>
         <View style={styles.button}>
           <Pressable onPress={() => signInUser()}>
             <Text style={styles.buttonText}>Continue</Text>
@@ -64,6 +63,10 @@ const styles = ScaledSheet.create({
   logo: {
     flex: 2,
   },
+  appLogo: {
+    width: '250@ms',
+    height: '100@ms',
+  },
   form: {
     flex: 4,
     justifyContent: 'space-between',
@@ -77,7 +80,7 @@ const styles = ScaledSheet.create({
     backgroundColor: '#7ABDC9',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: '5@s',
   },
   button: {
     width: '150@ms',

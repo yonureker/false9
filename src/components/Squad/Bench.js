@@ -13,14 +13,24 @@ const Bench = () => {
         style={{
           flexDirection: 'row',
           flex: 1,
-          alignSelf: 'stretch',
-          justifyContent: 'space-evenly',
           paddingTop: 15,
         }}>
-        <Player />
-        <Player />
-        <Player />
-        <Player />
+        <View style={styles.container}>
+          <Text style={{top: 5}}>GK</Text>
+          <Player />
+        </View>
+        <View style={styles.container}>
+          <Text style={{top: 5}}>DF</Text>
+          <Player />
+        </View>
+        <View style={styles.container}>
+          <Text style={{top: 5}}>MID</Text>
+          <Player />
+        </View>
+        <View style={styles.container}>
+          <Text style={{top: 5}}>FW</Text>
+          <Player />
+        </View>
       </View>
     </View>
   );
@@ -58,6 +68,6 @@ const styles = ScaledSheet.create({
     padding: '2@ms',
     color: 'white',
     fontFamily: 'LexendDeca-Regular',
-    fontSize: '12@ms'
+    fontSize: '12@ms',
   },
 });

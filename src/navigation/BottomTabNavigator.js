@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {scale} from 'react-native-size-matters';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 import BudgetStack from '../navigation/BudgetStack';
 import Stats from '../screens/BottomTab/Stats';
@@ -14,7 +16,7 @@ const Tab = createBottomTabNavigator();
 function BottomTabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName="Budget"
+      initialRouteName="Squad"
       tabBarOptions={{
         style: {backgroundColor: '#1098AE', height: scale(60)},
         labelStyle: {

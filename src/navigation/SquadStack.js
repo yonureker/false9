@@ -8,7 +8,9 @@ import SelectPlayer from '../screens/SelectPlayer';
 import BudgetStack from '../navigation/BudgetStack';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import {ScaledSheet, scale} from 'react-native-size-matters';
+import SelectTeam from '../screens/SelectTeam';
 
 const Stack = createStackNavigator();
 
@@ -47,7 +49,28 @@ const SquadStack = ({navigation}) => {
         }}
       />
       <Stack.Screen name="Fixtures" component={Fixtures} />
-      <Stack.Screen name="Select Player" component={SelectPlayer} />
+      <Stack.Screen
+        name="Select Player"
+        component={SelectPlayer}
+        options={{
+          headerRight: () => (
+            <View style={[styles.iconContainer, {flexDirection: 'row'}]}>
+              <Pressable
+                onPress={() => navigation.navigate('Select Team')}
+                style={[styles.iconContainer, {paddingRight: 10}]}>
+                <FontAwesome name="filter" size={25} color="white" />
+                <Text style={styles.text}>Teams</Text>
+              </Pressable>
+              <View style={styles.iconContainer}>
+                <FontAwesome5 name="sort" size={25} color="white" />
+                <Text style={styles.text}>Sort</Text>
+              </View>
+            </View>
+          ),
+          headerRightContainerStyle: {paddingRight: 10},
+        }}
+      />
+      <Stack.Screen name="Select Team" component={SelectTeam} />
       <Stack.Screen
         name="Budget"
         component={BudgetStack}

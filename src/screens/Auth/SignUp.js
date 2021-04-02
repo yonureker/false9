@@ -1,10 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {ImageBackground, Text, View, Image, Pressable} from 'react-native';
+import {
+  ImageBackground,
+  Text,
+  View,
+  Image,
+  Pressable,
+  Platform,
+} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
 
 GoogleSignin.configure({
   webClientId:
@@ -53,18 +61,52 @@ const SignUp = ({navigation}) => {
     return auth().signInWithCredential(facebookCredential);
   }
 
+  async function onAppleButtonPress() {
+    try {
+      // Start the sign-in request
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      // Ensure Apple returned a user identityToken
+      if (!appleAuthRequestResponse.identityToken) {
+        throw 'Apple Sign-In failed - no identify token returned';
+      }
+
+      // Create a Firebase credential from the response
+      const {identityToken, nonce} = appleAuthRequestResponse;
+      const appleCredential = auth.AppleAuthProvider.credential(
+        identityToken,
+        nonce,
+      );
+
+      // Sign the user in with the credential
+      return auth().signInWithCredential(appleCredential);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
       <View style={styles.logoContainer}>
         <Image source={logo} style={styles.appLogo} resizeMode="contain" />
       </View>
       <View style={styles.form}>
-        <Pressable
-          style={[styles.textInputContainer, styles.appleColor]}
-          onPress={() => Auth.federatedSignIn({provider: 'SignInWithApple'})}>
-          <Icon name="apple" size={30} color="white" style={styles.icon} />
-          <Text style={styles.textInput}>Sign Up with Apple</Text>
-        </Pressable>
+        {Platform.OS === 'ios' && (
+          <Pressable
+            style={[styles.textInputContainer, styles.appleColor]}
+            onPress={() =>
+              onAppleButtonPress().then(() =>
+                console.log('Apple sign-in complete!'),
+              )
+            }>
+            <Icon name="apple" size={30} color="white" style={styles.icon} />
+            <Text style={styles.textInput}>Continue with Apple</Text>
+          </Pressable>
+        )}
+
         <Pressable
           style={[styles.textInputContainer, styles.facebookColor]}
           onPress={() =>
@@ -73,7 +115,7 @@ const SignUp = ({navigation}) => {
             )
           }>
           <Icon name="facebook" size={30} color="white" style={styles.icon} />
-          <Text style={styles.textInput}>Sign Up with Facebook</Text>
+          <Text style={styles.textInput}>Continue with Facebook</Text>
         </Pressable>
         <Pressable
           style={[styles.textInputContainer, styles.googleColor]}
@@ -83,7 +125,13 @@ const SignUp = ({navigation}) => {
             )
           }>
           <Icon name="google" size={30} color="white" style={styles.icon} />
-          <Text style={styles.textInput}>Sign Up with Google</Text>
+          <Text style={styles.textInput}>Continue with Google</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.textInputContainer, styles.phoneNumberColor]}
+          onPress={() => navigation.navigate('PhoneAuth')}>
+          <Icon name="phone" size={30} color="white" style={styles.icon} />
+          <Text style={styles.textInput}>Continue with Phone Number</Text>
         </Pressable>
         <View>
           <Text style={styles.smallText}>
@@ -94,12 +142,12 @@ const SignUp = ({navigation}) => {
             <Text style={styles.textWithUnderline}>privacy notice</Text>.
           </Text>
         </View>
-        <View style={styles.button}>
+        {/* <View style={styles.button}>
           <Pressable onPress={() => Auth.federatedSignIn({provider: 'Google'})}>
             <Text style={styles.buttonText}>Continue</Text>
           </Pressable>
-        </View>
-        <View>
+        </View> */}
+        {/* <View>
           <Text style={styles.smallText}>
             Already have an account?{' '}
             <Text
@@ -108,7 +156,7 @@ const SignUp = ({navigation}) => {
               Sign In
             </Text>
           </Text>
-        </View>
+        </View> */}
       </View>
 
       <View style={styles.footer}></View>
@@ -138,7 +186,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     maxWidth: '300@ms',
-    maxHeight: '300@ms',
+    maxHeight: '250@ms',
   },
   textInputContainer: {
     height: '40@ms',
@@ -199,5 +247,8 @@ const styles = ScaledSheet.create({
   },
   appleColor: {
     backgroundColor: '#000',
+  },
+  phoneNumberColor: {
+    backgroundColor: '#35A654',
   },
 });

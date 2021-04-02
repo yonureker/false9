@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import BudgetItem from '../components/Budget/BudgetItem';
 
 const items = [
@@ -37,15 +37,16 @@ const items = [
 
 const Budget = () => {
   return (
-    <View style={styles.container}>
-      {items.map((item) => (
+    <ScrollView contentContainerStyle={styles.container}>
+      {items.map((item, index) => (
         <BudgetItem
+          key={index}
           title={item.title}
           content={item.description}
           buttonText={item.buttonText}
         />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

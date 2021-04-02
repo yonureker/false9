@@ -69,6 +69,7 @@
 		AA17FF8A2601F4C500D6423A /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		AA6082CE25F9CCEB001C7552 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		AA6F134E2602B6E30058A2CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AA81A9112610158800DC98F8 /* False9.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = False9.entitlements; path = False9/False9.entitlements; sourceTree = "<group>"; };
 		AA92FBBC25F851F70015F461 /* LexendDeca-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "LexendDeca-Regular.ttf"; path = "../assets/fonts/LexendDeca-Regular.ttf"; sourceTree = "<group>"; };
 		AD40B3E55A5D64078FE21478 /* Pods-False9-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-False9-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-False9-tvOS/Pods-False9-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C264FB64D402553F2E55D96A /* libPods-False9-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-False9-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +135,7 @@
 		13B07FAE1A68108700A75B9A /* False9 */ = {
 			isa = PBXGroup;
 			children = (
+				AA81A9112610158800DC98F8 /* False9.entitlements */,
 				AA6F134E2602B6E30058A2CC /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -316,6 +318,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 6T7YQ3PG4S;
 						LastSwiftMigration = 1240;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -769,7 +772,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = False9/False9.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6T7YQ3PG4S;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = False9/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -793,7 +798,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = False9/False9.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6T7YQ3PG4S;
 				INFOPLIST_FILE = False9/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

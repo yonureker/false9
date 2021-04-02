@@ -14,10 +14,10 @@ const Player = () => {
         navigation.navigate('Select Player');
       }}>
       <View style={styles.roundIcon}>
-        <Logo width="100%" height="100%" />
+        {/* <Logo width="100%" height="100%" /> */}
       </View>
       <View style={styles.playerNameContainer}>
-        <Text style={styles.playerNameText}>Uğurcan</Text>
+        <Text style={styles.playerNameText}></Text>
       </View>
     </Pressable>
   );
