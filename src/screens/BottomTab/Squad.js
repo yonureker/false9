@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ImageBackground, Modal, Pressable, Text, View} from 'react-native';
+import {ImageBackground, Pressable, Text, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {ScaledSheet} from 'react-native-size-matters';
 import PlayerSelection from '../../components/Squad/Player';

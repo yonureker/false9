@@ -33,8 +33,9 @@ const countries = [
 const SelectTeam = () => {
   return (
     <View style={styles.container}>
-      {countries.map((flag) => (
+      {countries.map((flag, index) => (
         <View
+          key={index}
           style={{
             width: '25%',
             height: '16.66%',
@@ -42,7 +43,7 @@ const SelectTeam = () => {
             alignItems: 'center',
             // paddingVertical: scale(15),
           }}>
-          <Flag country={flag} width={scale(35)} height={scale(35)}/>
+          <Flag country={flag} width={scale(35)} height={scale(35)} />
           <Text style={styles.countryName}>{flag}</Text>
         </View>
       ))}

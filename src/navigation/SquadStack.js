@@ -11,6 +11,7 @@ import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import SelectTeam from '../screens/SelectTeam';
+import HeaderTitle from '../components/Squad/HeaderTitle';
 
 const Stack = createStackNavigator();
 
@@ -33,7 +34,7 @@ const SquadStack = ({navigation}) => {
               <Pressable
                 style={styles.iconContainer}
                 onPress={() => navigation.navigate('Fixtures')}>
-                <AntDesign name="calendar" size={25} color="white" />
+                <AntDesign name="calendar" size={20} color="white" />
                 <Text style={styles.text}>Fixtures</Text>
               </Pressable>
             </View>
@@ -41,11 +42,12 @@ const SquadStack = ({navigation}) => {
           headerLeftContainerStyle: {paddingLeft: 10},
           headerRight: () => (
             <View style={styles.iconContainer}>
-              <FontAwesome5 name="save" size={25} color="white" />
+              <FontAwesome5 name="save" size={20} color="white" />
               <Text style={styles.text}>Save</Text>
             </View>
           ),
           headerRightContainerStyle: {paddingRight: 10},
+          headerTitle: (props) => <HeaderTitle {...props} />,
         }}
       />
       <Stack.Screen name="Fixtures" component={Fixtures} />

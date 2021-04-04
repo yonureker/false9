@@ -211,6 +211,7 @@ const SelectPlayer = () => {
             style={{
               flexDirection: 'row',
               backgroundColor: 'white',
+              paddingVertical: scale(10),
             }}>
             <View style={[{flex: 3}, styles.center]}>
               <Text style={styles.smallText}>Player</Text>

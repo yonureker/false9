@@ -14,10 +14,10 @@ const Player = () => {
         navigation.navigate('Select Player');
       }}>
       <View style={styles.roundIcon}>
-        {/* <Logo width="100%" height="100%" /> */}
+        <Logo width="100%" height="100%" />
       </View>
       <View style={styles.playerNameContainer}>
-        <Text style={styles.playerNameText}></Text>
+        <Text style={styles.playerNameText}>Donnaruma</Text>
       </View>
     </Pressable>
   );
@@ -31,8 +31,8 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
   },
   roundIcon: {
-    width: '40@s',
-    height: '40@s',
+    width: '35@s',
+    height: '35@s',
     borderRadius: 50,
     backgroundColor: '#DDDDDD',
     top: '5@vs',

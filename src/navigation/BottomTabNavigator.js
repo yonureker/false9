@@ -10,6 +10,7 @@ import Leagues from '../screens/BottomTab/Leagues';
 import More from '../screens/BottomTab/More';
 import SquadStack from './SquadStack';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import LeagueStack from './LeagueStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -55,7 +56,7 @@ function BottomTabNavigator() {
       />
       <Tab.Screen
         name="Leagues"
-        component={Leagues}
+        component={LeagueStack}
         options={{
           tabBarIcon: () => (
             <MaterialCommunityIcons name="soccer" size={scale(30)} />
