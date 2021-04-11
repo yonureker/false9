@@ -18,6 +18,7 @@ import AuthStack from './src/navigation/AuthStack';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import auth from '@react-native-firebase/auth';
 import {ScaledSheet} from 'react-native-size-matters';
+import {useSelector, useDispatch} from 'react-redux';
 
 const backgroundImage = require('./assets/false9_background.png');
 const logo = require('./assets/false9_logo.png');
@@ -27,6 +28,8 @@ const App = () => {
   const [initializing, setInitializing] = useState(false);
   const [teamNameSaved, setTeamNameSaved] = useState(false);
   const [teamName, setTeamName] = useState(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     SplashScreen.hide();
@@ -41,8 +44,10 @@ const App = () => {
     if (userData) {
       setUser(userData);
       checkUserOnFirestore(userData);
+      dispatch({type: 'RECEIVE_USER_DATA', payload: userData._user});
     } else {
       setUser(null);
+      dispatch({type: 'RESET_USER_DATA'});
     }
   }
 
@@ -53,7 +58,7 @@ const App = () => {
     setInitializing(false);
 
     if (doc.exists) {
-      const data = doc.data();
+      const data = doc.data(); 
 
       if (data.teamName) {
         setTeamNameSaved(true);

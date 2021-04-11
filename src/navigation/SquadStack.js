@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
+import firestore from '@react-native-firebase/firestore';
 
 import Squad from '../screens/BottomTab/Squad';
 import Fixtures from '../screens/Fixtures';
@@ -10,6 +11,7 @@ import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import {ScaledSheet, scale} from 'react-native-size-matters';
+import {useSelector, useDispatch} from 'react-redux';
 import SelectTeam from '../screens/SelectTeam';
 import HeaderTitle from '../components/Squad/HeaderTitle';
 
@@ -23,6 +25,30 @@ const headerStyle = {
 };
 
 const SquadStack = ({navigation}) => {
+  const uid = useSelector((state) => state.user.uid);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchSquad = async () => {
+      try {
+        const squadRef = await firestore()
+          .collection('users')
+          .doc(uid)
+          .collection('squads')
+          .doc('Group stage - Matchday 1')
+          .get();
+
+        const squadData = squadRef.data();
+
+        dispatch({type: 'RECEIVE_SQUAD_DATA', payload: squadData});
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchSquad();
+  }, []);
+
   return (
     <Stack.Navigator initialRouteName="Squad" screenOptions={headerStyle}>
       <Stack.Screen

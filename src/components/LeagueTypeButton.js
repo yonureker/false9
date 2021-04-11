@@ -1,18 +1,28 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
-import Fontisto from 'react-native-vector-icons/dist/Fontisto';
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
-const LeagueTypeButton = () => {
+const LeagueTypeButton = (props) => {
+  const {type, iconName, active, toggleLeagueType} = props;
+
+  const backgroundColor = active ? styles.active : styles.disabled;
+
   return (
-    <View style={styles.leagueTypeButton}>
-      <View>
-        <Fontisto name="locked" size={scale(15)} color="black" />
+    <Pressable
+      style={[styles.leagueTypeButton, backgroundColor]}
+      onPress={() => toggleLeagueType()}>
+      <View style={styles.centeredView}>
+        <MaterialCommunityIcons
+          name={iconName}
+          size={scale(15)}
+          color="black"
+        />
       </View>
-      <View>
-        <Text style={styles.buttonText}>Private League</Text>
+      <View style={styles.centeredView}>
+        <Text style={styles.buttonText}>{type}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -20,14 +30,24 @@ export default LeagueTypeButton;
 
 const styles = ScaledSheet.create({
   leagueTypeButton: {
-    backgroundColor: '#BFB9B9',
     flexDirection: 'row',
     padding: '5@s',
     borderRadius: 10,
+    margin: '5@s',
+  },
+  active: {
+    backgroundColor: '#BFB9B9',
+  },
+  disabled: {
+    backgroundColor: '#ECE5E5',
   },
   buttonText: {
-    fontSize: '14@s',
+    fontSize: '15@s',
     fontFamily: 'LexendDeca-Regular',
     paddingLeft: '5@s',
+  },
+  centeredView: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -3,7 +3,7 @@ import {Text, View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import Player from './Player';
 
-const Bench = () => {
+const Bench = (props) => {
   return (
     <View style={styles.benchContainer}>
       <View style={styles.benchHeaderContainer}>
@@ -17,19 +17,19 @@ const Bench = () => {
         }}>
         <View style={styles.container}>
           <Text style={{top: 5}}>GK</Text>
-          <Player />
+          <Player index={11} position="Goalkeeper" />
         </View>
         <View style={styles.container}>
           <Text style={{top: 5}}>DF</Text>
-          <Player />
+          <Player index={12} position="Defender" />
         </View>
         <View style={styles.container}>
           <Text style={{top: 5}}>MID</Text>
-          <Player />
+          <Player index={13} position="Midfielder" />
         </View>
         <View style={styles.container}>
           <Text style={{top: 5}}>FW</Text>
-          <Player />
+          <Player index={14} position="Forward" />
         </View>
       </View>
     </View>

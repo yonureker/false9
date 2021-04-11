@@ -1,24 +1,50 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import {useNavigation} from '@react-navigation/native';
-import Logo from '../../../assets/NationalTeams/turkey.svg';
+import Flag from '../../util/Flag';
+import {useDispatch, useSelector} from 'react-redux';
 
-const Player = () => {
+const Player = (props) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const {position, index} = props;
+
+  const playerProfile = useSelector(
+    (state) => state.squad.players[index],
+  );
+
+  const navigateToSelection = () => {
+    dispatch({type: 'UPDATE_PLAYER_INDEX', payload: index});
+
+    navigation.navigate('Select Player', {position: position});
+  };
 
   return (
-    <Pressable
-      style={styles.container}
-      onPress={() => {
-        navigation.navigate('Select Player');
-      }}>
+    <Pressable style={styles.container} onPress={() => navigateToSelection()}>
       <View style={styles.roundIcon}>
-        <Logo width="100%" height="100%" />
+        {JSON.stringify(playerProfile) !== '{}' ? (
+          <Flag
+            country={playerProfile.nationalTeam}
+            width="100%"
+            height="100%"
+          />
+        ) : null}
       </View>
       <View style={styles.playerNameContainer}>
-        <Text style={styles.playerNameText}>Donnaruma</Text>
+        <Text style={styles.playerNameText}>
+          {JSON.stringify(playerProfile) !== '{}'
+            ? playerProfile.lastName.toUpperCase()
+            : null}
+        </Text>
       </View>
+      {JSON.stringify(playerProfile) !== '{}' && (
+        <View style={styles.priceContainer}>
+          <Text style={styles.priceText}>
+            {'€' + (playerProfile.price / 1000000).toFixed(1) + 'M'}
+          </Text>
+        </View>
+      )}
     </Pressable>
   );
 };
@@ -29,6 +55,7 @@ const styles = ScaledSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    // top: '20@s'
   },
   roundIcon: {
     width: '35@s',
@@ -51,6 +78,19 @@ const styles = ScaledSheet.create({
     paddingVertical: '3@vs',
     paddingHorizontal: '2@ms',
     fontSize: '10@ms',
+    fontFamily: 'LexendDeca-Regular',
+  },
+  priceContainer: {
+    minWidth: '30@ms',
+    backgroundColor: '#DDDDDD',
+    borderRadius: 3,
+  },
+  priceText: {
+    textAlign: 'center',
+    color: 'black',
+    paddingVertical: '1@vs',
+    paddingHorizontal: '3@ms',
+    fontSize: '9@ms',
     fontFamily: 'LexendDeca-Regular',
   },
 });

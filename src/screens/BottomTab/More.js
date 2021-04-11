@@ -1,10 +1,18 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 const More = () => {
   return (
     <View>
-      <Text>More Screen</Text>
+      <Pressable
+        onPress={() =>
+          auth()
+            .signOut()
+            .then(() => console.log('User signed out!'))
+        }>
+        <Text>Sign Out</Text>
+      </Pressable>
     </View>
   );
 };
