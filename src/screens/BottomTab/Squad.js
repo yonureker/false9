@@ -6,26 +6,24 @@ import {
   Text,
   View,
 } from 'react-native';
-
 import {ScaledSheet} from 'react-native-size-matters';
-import firestore from '@react-native-firebase/firestore';
+import {useDispatch, useSelector} from 'react-redux';
 import PlayerSelection from '../../components/Squad/Player';
 import Bench from '../../components/Squad/Bench';
-import {useDispatch, useSelector} from 'react-redux';
+import Countdown from '../../components/Squad/Countdown';
 
 const backgroundImage = require('../../../assets/soccer_field.png');
 
 const Squad = ({navigation}) => {
-  const dispatch = useDispatch();
-  const squad = useSelector((state) => state.squad);
-  const {players, formation} = squad;
-
   const [dropDownVisible, setDropDownVisible] = useState(false);
   const [starterGoalkeeper, setStarterGoalkeeper] = useState(null);
   const [starterDefenders, setStarterDefenders] = useState(null);
   const [starterMidfielders, setStarterMidfielders] = useState(null);
   const [starterForwards, setStarterForwards] = useState(null);
-  const [bench, setBench] = useState(null);
+
+  const dispatch = useDispatch();
+  const squad = useSelector((state) => state.squad);
+  const {players, formation} = squad;
 
   const formationOptions = [
     '3 - 4 - 3',
@@ -37,15 +35,14 @@ const Squad = ({navigation}) => {
     '5 - 4 - 1',
   ];
 
-  const updateFormation = (text) => {
-    // setFormation(text);
+  const updateFormation = async (text) => {
+    await dispatch({type: 'UPDATE_SQUAD_FORMATION', payload: text});
+
     setDropDownVisible(!dropDownVisible);
   };
 
   useEffect(() => {
     const mappedFormation = formation.split(' - ');
-
-    const goalkeepers = 1;
     const defenders = Number(mappedFormation[0]);
     const midfielders = Number(mappedFormation[1]);
     const forwards = Number(mappedFormation[2]);
@@ -61,10 +58,15 @@ const Squad = ({navigation}) => {
         1 + defenders + midfielders + forwards,
       ),
     );
-    setBench(players.slice(12));
   }, [formation, players]);
 
-  if (players.length === 15) {
+  if (
+    players.length === 15 &&
+    starterGoalkeeper &&
+    starterDefenders &&
+    starterMidfielders &&
+    starterForwards
+  ) {
     return (
       <ImageBackground source={backgroundImage} style={styles.container}>
         <View style={styles.tacticsContainer}>
@@ -83,6 +85,9 @@ const Squad = ({navigation}) => {
           onPress={() => navigation.navigate('Budget')}>
           <Text style={styles.tacticsText}>Add Budget</Text>
         </Pressable>
+        <View style={styles.countDown}>
+          <Countdown />
+        </View>
         <View style={styles.playerRow}>
           {starterGoalkeeper.map((goalkeeper, index) => (
             <PlayerSelection key={index} position="Goalkeeper" index={index} />
@@ -157,11 +162,16 @@ const styles = ScaledSheet.create({
     right: 0,
     backgroundColor: '#C4C4C4',
     borderBottomLeftRadius: '10@ms',
+    zIndex: 99,
   },
   tacticsText: {
     paddingHorizontal: '20@s',
     paddingVertical: '2@ms',
     fontSize: '12@s',
     fontFamily: 'LexendDeca-Regular',
+  },
+  countDown: {
+    position: 'absolute',
+    top: '20@s',
   },
 });

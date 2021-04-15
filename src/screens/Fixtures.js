@@ -11,7 +11,7 @@ const Fixtures = () => {
     try {
       const fixturesData = await firestore()
         .collection('fixtures')
-        .doc('Group stage - Matchday 3')
+        .doc('Group stage - Matchday 1')
         .get();
 
       setFixtures(fixturesData.data());
@@ -46,8 +46,8 @@ const Fixtures = () => {
             <View style={styles.flagContainer}>
               <Flag
                 country={match.homeTeam}
-                width={scale(30)}
-                height={scale(30)}
+                width={scale(25)}
+                height={scale(25)}
               />
             </View>
             <View style={styles.dashContainer}>
@@ -56,8 +56,8 @@ const Fixtures = () => {
             <View style={styles.flagContainer}>
               <Flag
                 country={match.awayTeam}
-                width={scale(30)}
-                height={scale(30)}
+                width={scale(25)}
+                height={scale(25)}
               />
             </View>
             <View style={styles.awayTeamNameContainer}>

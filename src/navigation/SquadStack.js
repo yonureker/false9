@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, Alert} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import firestore from '@react-native-firebase/firestore';
 
@@ -12,8 +12,11 @@ import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import {useSelector, useDispatch} from 'react-redux';
+
 import SelectTeam from '../screens/SelectTeam';
 import HeaderTitle from '../components/Squad/HeaderTitle';
+import PlayerDetails from '../screens/PlayerDetails';
+import checkEmptyObject from '../util/checkEmptyObject';
 
 const Stack = createStackNavigator();
 
@@ -26,8 +29,14 @@ const headerStyle = {
 
 const SquadStack = ({navigation}) => {
   const uid = useSelector((state) => state.user.uid);
+  const squad = useSelector((state) => state.squad);
+  const {totalBudget} = squad.budget;
+  const {value, players, captainIndex} = squad;
+
+  const availableBudget = totalBudget - value;
   const dispatch = useDispatch();
 
+  // fetch the latest squad data
   useEffect(() => {
     const fetchSquad = async () => {
       try {
@@ -49,6 +58,37 @@ const SquadStack = ({navigation}) => {
     fetchSquad();
   }, []);
 
+  const saveSquadToFirestore = async () => {
+    // starter players array
+    const starters = players.slice(0, 11);
+
+    //if there is no captain, do not save
+    if (!captainIndex) {
+      Alert.alert('Make sure you have a captain!');
+      return;
+    }
+
+    // only save squad if the deadline is not passed for the round.
+
+    // only save squad if there are 11 starters.
+    if (starters.every((player) => !checkEmptyObject(player))) {
+      try {
+        await firestore()
+          .collection('users')
+          .doc(uid)
+          .collection('squads')
+          .doc('Group stage - Matchday 1')
+          .set(squad);
+
+        Alert.alert('Squad saved!');
+      } catch (error) {
+        console.log('error');
+      }
+    } else {
+      Alert.alert('You need at least 11 starters to save your squad.');
+    }
+  };
+
   return (
     <Stack.Navigator initialRouteName="Squad" screenOptions={headerStyle}>
       <Stack.Screen
@@ -67,16 +107,21 @@ const SquadStack = ({navigation}) => {
           ),
           headerLeftContainerStyle: {paddingLeft: 10},
           headerRight: () => (
-            <View style={styles.iconContainer}>
+            <Pressable
+              style={styles.iconContainer}
+              onPress={() => saveSquadToFirestore()}>
               <FontAwesome5 name="save" size={20} color="white" />
               <Text style={styles.text}>Save</Text>
-            </View>
+            </Pressable>
           ),
           headerRightContainerStyle: {paddingRight: 10},
-          headerTitle: (props) => <HeaderTitle {...props} />,
+          headerTitle: (props) => (
+            <HeaderTitle {...props} availableBudget={availableBudget} />
+          ),
         }}
       />
       <Stack.Screen name="Fixtures" component={Fixtures} />
+      <Stack.Screen name="Player Details" component={PlayerDetails} />
       <Stack.Screen
         name="Select Player"
         component={SelectPlayer}
@@ -114,6 +159,7 @@ const styles = ScaledSheet.create({
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 99,
   },
   leftContainer: {
     paddingLeft: '20@s',

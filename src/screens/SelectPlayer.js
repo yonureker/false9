@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Alert, Pressable, Text, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {scale, ScaledSheet} from 'react-native-size-matters';
 import Flag from '../util/Flag';
@@ -17,8 +11,51 @@ const SelectPlayer = (props) => {
   const [playerData, setPlayerData] = useState(null);
   const squad = useSelector((state) => state.squad);
   const selectedIndex = useSelector((state) => state.selectedPlayer.index);
-  const {players} = squad;
-  const {position} = props.route.params;
+  const {players, value} = squad;
+  const {totalBudget} = squad.budget;
+  const {position, replacedPlayerPrice} = props.route.params;
+
+  const addPlayertoSquad = (item) => {
+    // if player is replacing another player;
+    if (replacedPlayerPrice) {
+      if (item.profile.price > totalBudget - value + replacedPlayerPrice) {
+        Alert.alert("You don't have enough budget to add this player");
+        return;
+      }
+    // if no player is being replaced.
+    } else {
+      if (item.profile.price > totalBudget - value) {
+        Alert.alert("You don't have enough budget to add this player");
+        return;
+      }
+    }
+
+    if (players.every((player) => !player.id || player.id !== item.key)) {
+      dispatch({
+        type: 'ADD_PLAYER',
+        id: selectedIndex,
+        payload: {
+          firstName: item.profile.firstName,
+          lastName: item.profile.lastName,
+          nationalTeam: item.profile.nationalTeam,
+          price: item.profile.price,
+          id: item.key,
+        },
+      });
+
+      dispatch({
+        type: 'UPDATE_SQUAD_VALUE',
+        payload:
+          replacedPlayerPrice === undefined
+            ? item.profile.price
+            : item.profile.price - replacedPlayerPrice,
+      });
+
+      props.navigation.navigate('Group Stage - Matchday 1');
+    } else {
+      Alert.alert('You already have this player in your squad.');
+    }
+  };
 
   const fetchPlayers = async () => {
     const docSnapshots = await firestore()
@@ -77,21 +114,7 @@ const SelectPlayer = (props) => {
                 borderTopWidth: 1,
                 // paddingVertical: scale(5),
               }}
-              onPress={() => {
-                dispatch({
-                  type: 'UPDATE_PLAYERS',
-                  id: selectedIndex,
-                  payload: {
-                    firstName: item.profile.firstName,
-                    lastName: item.profile.lastName,
-                    nationalTeam: item.profile.nationalTeam,
-                    price: item.profile.price,
-                    id: item.key,
-                  },
-                });
-
-                props.navigation.navigate('Group Stage - Matchday 1');
-              }}>
+              onPress={() => addPlayertoSquad(item)}>
               <View style={{flexDirection: 'row', flex: 3}}>
                 <View style={styles.flatListSection}>
                   <Flag
@@ -129,7 +152,9 @@ const SelectPlayer = (props) => {
                 <Text style={styles.mediumText}>{item.stats.cleanSheets}</Text>
               </View>
               <View style={[styles.flatListSection, {flex: 1.5}]}>
-                <Text style={styles.mediumText}>{item.stats.goalsConceded}</Text>
+                <Text style={styles.mediumText}>
+                  {item.stats.goalsConceded}
+                </Text>
               </View>
             </Pressable>
           )}

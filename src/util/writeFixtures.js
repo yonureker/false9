@@ -65,7 +65,7 @@ const writeFixtures = () => {
         .doc(round.matchday)
         .set(round.data);
     } catch (error) {
-      console.log();
+      console.log(error);
     }
   });
 };

@@ -1,12 +1,15 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 
-const HeaderTitle = () => {
+const HeaderTitle = (props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.normalText}>Group Stage - MatchDay 1</Text>
-      <Text style={styles.smallText}>Available Budget: €75,000,000</Text>
+      <Text style={styles.smallText}>
+        {' '}
+        {'€' + (props.availableBudget / 1000000).toFixed(1) + 'M'} available
+      </Text>
     </View>
   );
 };

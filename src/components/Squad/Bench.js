@@ -12,8 +12,6 @@ const Bench = (props) => {
       <View
         style={{
           flexDirection: 'row',
-          flex: 1,
-          paddingTop: 15,
         }}>
         <View style={styles.container}>
           <Text style={{top: 5}}>GK</Text>

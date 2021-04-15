@@ -31,6 +31,16 @@ const App = () => {
 
   const dispatch = useDispatch();
 
+  const rounds = {
+    0: 'Group stage - Matchday 1',
+    1: 'Group stage - Matchday 2',
+    2: 'Group stage - Matchday 3',
+    3: 'Round of 16',
+    4: 'Quarter Final',
+    5: 'Semi Final',
+    6: 'Final',
+  };
+
   useEffect(() => {
     SplashScreen.hide();
   }, []);
@@ -38,6 +48,10 @@ const App = () => {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
+  }, []);
+
+  useEffect(() => {
+    fetchRoundTimeStamps();
   }, []);
 
   function onAuthStateChanged(userData) {
@@ -58,14 +72,13 @@ const App = () => {
     setInitializing(false);
 
     if (doc.exists) {
-      const data = doc.data(); 
+      const data = doc.data();
 
       if (data.teamName) {
         setTeamNameSaved(true);
       }
     } else {
       setTeamNameSaved(false);
-
       firestore().collection('users').doc(user.uid).set({uid: user.uid});
     }
   };
@@ -79,6 +92,26 @@ const App = () => {
 
     setInitializing(false);
     setTeamNameSaved(true);
+  };
+
+  const fetchRoundTimeStamps = async () => {
+    // get deadlines for each round
+    const docRef = await firestore().collection('deadlines').doc('v1').get();
+    const deadlines = docRef.data();
+
+    // get current date
+    const currentDate = Math.floor(Date.now() / 1000);
+    let index;
+
+    // find the index of current date in a given deadline array
+    for (let i = 0; i < deadlines.unixStamps.length; i++) {
+      if (currentDate < deadlines.unixStamps[i]) {
+        index = i;
+        break;
+      }
+    }
+
+    dispatch({type: 'GET_ROUND', payload: rounds[index]});
   };
 
   if (initializing) {
