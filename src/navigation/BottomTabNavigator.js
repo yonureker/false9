@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {scale} from 'react-native-size-matters';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
+import IonIcons from 'react-native-vector-icons/dist/Ionicons';
 
 import BudgetStack from '../navigation/BudgetStack';
 import Stats from '../screens/BottomTab/Stats';
-import Leagues from '../screens/BottomTab/Leagues';
 import More from '../screens/BottomTab/More';
 import SquadStack from './SquadStack';
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import LeagueStack from './LeagueStack';
 
 const Tab = createBottomTabNavigator();
@@ -31,18 +31,14 @@ function BottomTabNavigator() {
         name="Squad"
         component={SquadStack}
         options={{
-          tabBarIcon: () => (
-            <MaterialCommunityIcons name="soccer" size={scale(30)} />
-          ),
+          tabBarIcon: () => <IonIcons name="shirt" size={scale(30)} />,
         }}
       />
       <Tab.Screen
         name="Budget"
         component={BudgetStack}
         options={{
-          tabBarIcon: () => (
-            <MaterialCommunityIcons name="soccer" size={scale(30)} />
-          ),
+          tabBarIcon: () => <FontAwesome name="money" size={scale(30)} />,
         }}
       />
       <Tab.Screen
@@ -50,7 +46,7 @@ function BottomTabNavigator() {
         component={Stats}
         options={{
           tabBarIcon: () => (
-            <MaterialCommunityIcons name="soccer" size={scale(30)} />
+            <MaterialIcons name="leaderboard" size={scale(30)} />
           ),
         }}
       />
@@ -59,7 +55,7 @@ function BottomTabNavigator() {
         component={LeagueStack}
         options={{
           tabBarIcon: () => (
-            <MaterialCommunityIcons name="soccer" size={scale(30)} />
+            <MaterialCommunityIcons name="trophy" size={scale(30)} />
           ),
         }}
       />
@@ -68,7 +64,7 @@ function BottomTabNavigator() {
         component={More}
         options={{
           tabBarIcon: () => (
-            <MaterialCommunityIcons name="soccer" size={scale(30)} />
+            <MaterialCommunityIcons name="dots-horizontal" size={scale(30)} />
           ),
         }}
       />

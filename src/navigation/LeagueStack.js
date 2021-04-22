@@ -4,9 +4,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 
-import LeaguesHome from '../screens/LeaguesHome';
-import CreateLeague from '../screens/CreateLeague';
-import JoinLeague from '../screens/JoinLeague';
+import LeaguesHome from '../screens/League/LeaguesHome';
+import CreateLeague from '../screens/League/CreateLeague';
+import JoinLeague from '../screens/League/JoinLeague';
+import LeagueDetails from '../screens/League/LeagueDetails';
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,7 @@ const LeagueStack = ({navigation}) => {
       />
       <Stack.Screen name="Create League" component={CreateLeague} />
       <Stack.Screen name="Join League" component={JoinLeague} />
+      <Stack.Screen name="League Details" component={LeagueDetails} />
     </Stack.Navigator>
   );
 };
@@ -71,7 +73,7 @@ const styles = ScaledSheet.create({
   },
   text: {
     fontFamily: 'LexendDeca-Regular',
-    fontSize: '12@s',
+    fontSize: '10@s',
     color: 'white',
   },
 });

@@ -13,7 +13,7 @@ const squadReducer = (state = initialState, action) => {
     case 'RECEIVE_SQUAD_DATA':
       return action.payload;
     case 'RESET_SQUAD_DATA':
-      return null;
+      return {...state, players: state.players.map((player) => action.payload)};
     case 'ADD_PLAYER':
       const index = action.id;
 
@@ -27,6 +27,11 @@ const squadReducer = (state = initialState, action) => {
       return {
         ...state,
         value: state.value + action.payload,
+      };
+    case 'RESET_SQUAD_VALUE':
+      return {
+        ...state,
+        value: 0,
       };
     case 'UPDATE_SQUAD_FORMATION':
       return {

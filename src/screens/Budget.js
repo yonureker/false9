@@ -16,6 +16,12 @@ const items = [
     buttonText: 'CLAIM',
   },
   {
+    title: 'WATCH ADS',
+    description:
+      'Earn €250,000 each time you watch a video ad!',
+    buttonText: 'CLAIM',
+  },
+  {
     title: 'PURCHASE BUDGET',
     description:
       'You can purchase additional budget for $0.99. This bonus is applicable only for one round. An additional budget of €5,000,000 will be added.',

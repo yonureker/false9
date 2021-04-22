@@ -63,7 +63,7 @@ const SquadStack = ({navigation}) => {
     const starters = players.slice(0, 11);
 
     //if there is no captain, do not save
-    if (!captainIndex) {
+    if (captainIndex === null) {
       Alert.alert('Make sure you have a captain!');
       return;
     }

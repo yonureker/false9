@@ -13,6 +13,7 @@ import Bench from '../../components/Squad/Bench';
 import Countdown from '../../components/Squad/Countdown';
 
 const backgroundImage = require('../../../assets/soccer_field.png');
+const netflixBanner = require('../../../assets/netflix.png');
 
 const Squad = ({navigation}) => {
   const [dropDownVisible, setDropDownVisible] = useState(false);
@@ -39,6 +40,12 @@ const Squad = ({navigation}) => {
     await dispatch({type: 'UPDATE_SQUAD_FORMATION', payload: text});
 
     setDropDownVisible(!dropDownVisible);
+  };
+
+  const resetSquad = () => {
+    dispatch({type: 'RESET_SQUAD_DATA', payload: {}});
+    dispatch({type: 'RESET_SQUAD_VALUE'});
+    dispatch({type: 'UPDATE_CAPTAIN_INDEX', payload: null});
   };
 
   useEffect(() => {
@@ -69,7 +76,7 @@ const Squad = ({navigation}) => {
   ) {
     return (
       <ImageBackground source={backgroundImage} style={styles.container}>
-        <View style={styles.tacticsContainer}>
+        {/* <View style={styles.tacticsContainer}>
           <Pressable onPress={() => setDropDownVisible(!dropDownVisible)}>
             <Text style={styles.tacticsText}>Formation</Text>
           </Pressable>
@@ -84,10 +91,16 @@ const Squad = ({navigation}) => {
           style={styles.addBudgetContainer}
           onPress={() => navigation.navigate('Budget')}>
           <Text style={styles.tacticsText}>Add Budget</Text>
-        </Pressable>
+        </Pressable> */}
         <View style={styles.countDown}>
           <Countdown />
         </View>
+        <Pressable onPress={() => resetSquad()}>
+          <Text style={styles.tacticsText}>Reset Squad</Text>
+        </Pressable>
+        {/* <View>
+          <ImageBackground source={netflixBanner} style={styles.netflixBanner}/>
+        </View> */}
         <View style={styles.playerRow}>
           {starterGoalkeeper.map((goalkeeper, index) => (
             <PlayerSelection key={index} position="Goalkeeper" index={index} />
@@ -143,6 +156,7 @@ const styles = ScaledSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     justifyContent: 'space-evenly',
+    alignItems: 'flex-start',
   },
   tacticsContainer: {
     justifyContent: 'center',
@@ -171,7 +185,15 @@ const styles = ScaledSheet.create({
     fontFamily: 'LexendDeca-Regular',
   },
   countDown: {
-    position: 'absolute',
-    top: '20@s',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '15@s',
+    paddingBottom: '10@s',
+    // position: 'absolute',
+    // top: '20@s',
+  },
+  netflixBanner: {
+    width: '350@s',
+    height: '20@s',
   },
 });

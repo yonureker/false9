@@ -69,6 +69,8 @@ const SignUp = ({navigation}) => {
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
       });
 
+      console.log(appleAuthRequestResponse);
+
       // Ensure Apple returned a user identityToken
       if (!appleAuthRequestResponse.identityToken) {
         throw 'Apple Sign-In failed - no identify token returned';
@@ -80,6 +82,8 @@ const SignUp = ({navigation}) => {
         identityToken,
         nonce,
       );
+
+      console.log(appleCredential)
 
       // Sign the user in with the credential
       return auth().signInWithCredential(appleCredential);

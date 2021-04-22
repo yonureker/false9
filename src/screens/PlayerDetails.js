@@ -42,7 +42,7 @@ const PlayerDetails = ({route, navigation}) => {
   };
 
   const makeCaptain = () => {
-    if (selectedIndex < 10) {
+    if (selectedIndex < 11) {
       dispatch({type: 'UPDATE_CAPTAIN_INDEX', payload: selectedIndex});
 
       navigation.navigate('Group Stage - Matchday 1');

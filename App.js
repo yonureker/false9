@@ -31,15 +31,15 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const rounds = {
-    0: 'Group stage - Matchday 1',
-    1: 'Group stage - Matchday 2',
-    2: 'Group stage - Matchday 3',
-    3: 'Round of 16',
-    4: 'Quarter Final',
-    5: 'Semi Final',
-    6: 'Final',
-  };
+  const rounds = [
+    'Group stage - Matchday 1',
+    'Group stage - Matchday 2',
+    'Group stage - Matchday 3',
+    'Round of 16',
+    'Quarter Final',
+    'Semi Final',
+    'Final',
+  ];
 
   useEffect(() => {
     SplashScreen.hide();
@@ -56,9 +56,9 @@ const App = () => {
 
   function onAuthStateChanged(userData) {
     if (userData) {
+      dispatch({type: 'RECEIVE_USER_DATA', payload: userData._user});
       setUser(userData);
       checkUserOnFirestore(userData);
-      dispatch({type: 'RECEIVE_USER_DATA', payload: userData._user});
     } else {
       setUser(null);
       dispatch({type: 'RESET_USER_DATA'});
@@ -79,7 +79,46 @@ const App = () => {
       }
     } else {
       setTeamNameSaved(false);
-      firestore().collection('users').doc(user.uid).set({uid: user.uid});
+
+      try {
+        const batch = firestore().batch();
+
+        // add user to users collection
+        const newUserRef = firestore().collection('users');
+        batch.set(newUserRef.doc(user.uid), {
+          uid: user.uid,
+          createdOn: firestore.FieldValue.serverTimestamp(),
+          leagues: [],
+          points: {
+            totalPoints: 0,
+            'Group stage - Matchday 1': 0,
+            'Group stage - Matchday 2': 0,
+            'Group stage - Matchday 3': 0,
+            'Round of 16': 0,
+            'Quarter Final': 0,
+            'Semi Final': 0,
+            Final: 0,
+          },
+        });
+
+        const userRef = firestore().collection('users').doc(user.uid);
+        rounds.map((round) => {
+          batch.set(userRef.collection('squads').doc(round), {
+            players: Array(15).fill({}),
+            value: 0,
+            points: 0,
+            formation: '4 - 4 - 2',
+            budget: {
+              totalBudget: 75000000,
+            },
+          });
+        });
+
+        await batch.commit();
+        console.log('batch write success');
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -88,7 +127,7 @@ const App = () => {
     await firestore()
       .collection('users')
       .doc(user.uid)
-      .set({teamName: teamName}, {merge: true});
+      .set({teamName: teamName, leagues: []}, {merge: true});
 
     setInitializing(false);
     setTeamNameSaved(true);

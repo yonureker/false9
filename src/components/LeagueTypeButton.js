@@ -7,6 +7,9 @@ const LeagueTypeButton = (props) => {
   const {type, iconName, active, toggleLeagueType} = props;
 
   const backgroundColor = active ? styles.active : styles.disabled;
+  const buttonText = active
+    ? styles.activeButtonText
+    : styles.disabledButtonText;
 
   return (
     <Pressable
@@ -20,7 +23,7 @@ const LeagueTypeButton = (props) => {
         />
       </View>
       <View style={styles.centeredView}>
-        <Text style={styles.buttonText}>{type}</Text>
+        <Text style={buttonText}>{type}</Text>
       </View>
     </Pressable>
   );
@@ -31,17 +34,22 @@ export default LeagueTypeButton;
 const styles = ScaledSheet.create({
   leagueTypeButton: {
     flexDirection: 'row',
-    padding: '5@s',
+    padding: '10@s',
     borderRadius: 10,
-    margin: '5@s',
   },
   active: {
-    backgroundColor: '#BFB9B9',
+    backgroundColor: '#1098AE',
   },
   disabled: {
     backgroundColor: '#ECE5E5',
   },
-  buttonText: {
+  activeButtonText: {
+    fontSize: '15@s',
+    fontFamily: 'LexendDeca-Regular',
+    paddingLeft: '5@s',
+    color: 'white'
+  },
+  disabledButtonText: {
     fontSize: '15@s',
     fontFamily: 'LexendDeca-Regular',
     paddingLeft: '5@s',
