@@ -10,7 +10,7 @@ const SelectPlayer = (props) => {
   const dispatch = useDispatch();
   const [playerData, setPlayerData] = useState(null);
   const squad = useSelector((state) => state.squad);
-  const selectedIndex = useSelector((state) => state.selectedPlayer.index);
+  const selectedIndex = useSelector((state) => state.selection.player);
   const {players, value} = squad;
   const {totalBudget} = squad.budget;
   const {position, replacedPlayerPrice} = props.route.params;
@@ -22,7 +22,7 @@ const SelectPlayer = (props) => {
         Alert.alert("You don't have enough budget to add this player");
         return;
       }
-    // if no player is being replaced.
+      // if no player is being replaced.
     } else {
       if (item.profile.price > totalBudget - value) {
         Alert.alert("You don't have enough budget to add this player");
@@ -53,7 +53,7 @@ const SelectPlayer = (props) => {
 
       props.navigation.navigate('Group Stage - Matchday 1');
     } else {
-      Alert.alert('You already have this player in your squad.');
+      Alert.alert('Twins?', 'You already have this player in your squad');
     }
   };
 

@@ -118,7 +118,7 @@ const SignUp = ({navigation}) => {
               console.log('Signed in with Facebook!'),
             )
           }>
-          <Icon name="facebook" size={30} color="white" style={styles.icon} />
+          <Icon name="facebook-square" size={30} color="white" style={styles.icon} />
           <Text style={styles.textInput}>Continue with Facebook</Text>
         </Pressable>
         <Pressable
@@ -238,7 +238,7 @@ const styles = ScaledSheet.create({
   },
   icon: {
     paddingLeft: '10@ms',
-    paddingRight: '10@ms',
+    paddingRight: '10@ms'
   },
   countryPicker: {
     paddingRight: '5@ms',

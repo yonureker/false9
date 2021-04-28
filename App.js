@@ -173,7 +173,7 @@ const App = () => {
         </View>
         <View style={styles.form}>
           <View>
-            <Text style={styles.smallText}>Pick your team name</Text>
+            <Text style={styles.largeText}>Pick your team name</Text>
           </View>
           <View style={styles.textInputContainer}>
             <TextInput
@@ -184,7 +184,8 @@ const App = () => {
             />
           </View>
           <View>
-            <Text style={styles.smallText}>Pick your team name</Text>
+            <Text style={styles.smallText}>Min 3 & Max 25 characters</Text>
+            <Text style={styles.smallText}>Team name must be unique</Text>
           </View>
           <View style={styles.button}>
             <Pressable onPress={() => addTeamNameOnFirestore()}>
@@ -263,9 +264,15 @@ const styles = ScaledSheet.create({
   footer: {
     flex: 0.5,
   },
-  smallText: {
+  largeText: {
     color: 'white',
     fontSize: '18@ms',
+    textAlign: 'center',
+    fontFamily: 'LexendDeca-Regular',
+  },
+  smallText: {
+    color: 'white',
+    fontSize: '14@ms',
     textAlign: 'center',
     fontFamily: 'LexendDeca-Regular',
   },

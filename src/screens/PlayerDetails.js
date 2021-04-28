@@ -8,7 +8,7 @@ import Flag from '../util/Flag';
 
 const PlayerDetails = ({route, navigation}) => {
   const dispatch = useDispatch();
-  const selectedIndex = useSelector((state) => state.selectedPlayer.index);
+  const selectedIndex = useSelector((state) => state.selection.player);
 
   const {
     firstName,

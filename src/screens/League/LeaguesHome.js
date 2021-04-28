@@ -15,6 +15,7 @@ const LeaguesHome = ({navigation}) => {
   const [leagueDetails, setLeagueDetails] = useState([]);
   const [leagueIDs, setLeagueIDs] = useState([]);
   const uid = useSelector((state) => state.user.uid);
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     try {
@@ -44,6 +45,12 @@ const LeaguesHome = ({navigation}) => {
       console.log(error);
     }
   }, [uid]);
+
+  const navigateToLeagueDetails = (id) => {
+    dispatch({type: 'UPDATE_LEAGUE_ID', payload: id});
+
+    navigation.navigate('League Details');
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -83,11 +90,7 @@ const LeaguesHome = ({navigation}) => {
       <View style={styles.listContainer}>
         {leagueDetails.map((item, index) => (
           <Pressable
-            onPress={() =>
-              navigation.navigate('League Details', {
-                leagueID: leagueIDs[index],
-              })
-            }
+            onPress={() => navigateToLeagueDetails(leagueIDs[index])}
             key={index}
             style={styles.listItem}>
             <View style={styles.flexTwo}>

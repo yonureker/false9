@@ -46,7 +46,7 @@ const CreateLeague = ({navigation}) => {
       // commit batch
       await batch.commit();
 
-      navigation.navigate('Leagues');
+      navigation.navigate('Leagues Home');
     } catch (error) {
       console.log('transaction failure', error);
     }
@@ -168,6 +168,7 @@ const styles = ScaledSheet.create({
   itemText: {
     fontSize: '14@s',
     fontFamily: 'LexendDeca-Regular',
+    flex: 1,
   },
   itemIcon: {
     paddingHorizontal: '10@s',
