@@ -13,21 +13,25 @@ const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key;
 const ALGOLIA_INDEX_NAME = "false9_leagues";
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
 
-// [END init_algolia]
-
-// [START update_index_function]
-// Update the search index every time a blog post is written.
-exports.onLeagueCreated = functions.firestore
+exports.onLeagueUpdate = functions.firestore
     .document("leagues/{leagueId}")
-    .onCreate((snap, context) => {
-    // Get the note document
-      const league = snap.data();
+    .onWrite((change, context) => {
+      const index = client.initIndex(ALGOLIA_INDEX_NAME);
+      const leagueId = context.params.leagueId;
+      const league = change.after.data();
+
+      if (!league) {
+        return index.deleteObject(leagueId, (error) => {
+          if (error) throw error;
+          console.log("League removed");
+        });
+      }
 
       // Add an 'objectID' field which Algolia requires
-      league.objectID = context.params.leagueId;
+      league.objectID = leagueId;
 
-      // Write to the algolia index
-      const index = client.initIndex(ALGOLIA_INDEX_NAME);
-      return index.saveObject(league);
+      return index.saveObject(league, (error) => {
+        if (error) throw error;
+        console.log("League updated");
+      });
     });
-// [END update_index_function]

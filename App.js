@@ -18,7 +18,8 @@ import AuthStack from './src/navigation/AuthStack';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import auth from '@react-native-firebase/auth';
 import {ScaledSheet} from 'react-native-size-matters';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import rounds from './src/util/Rounds';
 
 const backgroundImage = require('./assets/false9_background.png');
 const logo = require('./assets/false9_logo.png');
@@ -30,16 +31,6 @@ const App = () => {
   const [teamName, setTeamName] = useState(null);
 
   const dispatch = useDispatch();
-
-  const rounds = [
-    'Group stage - Matchday 1',
-    'Group stage - Matchday 2',
-    'Group stage - Matchday 3',
-    'Round of 16',
-    'Quarter Final',
-    'Semi Final',
-    'Final',
-  ];
 
   useEffect(() => {
     SplashScreen.hide();
@@ -194,7 +185,7 @@ const App = () => {
           </View>
         </View>
 
-        <View style={styles.footer}></View>
+        <View style={styles.footer} />
       </ImageBackground>
     );
   }

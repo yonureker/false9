@@ -3,5 +3,9 @@
     "predeploy": [
       "npm --prefix \"$RESOURCE_DIR\" run lint"
     ]
+  },
+  "react-native": {
+    "admob_android_app_id": "ca-app-pub-9052597103615584~9614768351",
+    "admob_ios_app_id": "ca-app-pub-9052597103615584~3188960808"
   }
 }

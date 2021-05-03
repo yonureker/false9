@@ -25,7 +25,6 @@ const LeagueDetails = ({navigation, route}) => {
 
   const fetchMoreLeagueMembers = async () => {
     if (leagueUsers.length >= 20) {
-      console.log('runned more');
       const usersSnaphot = await firestore()
         .collection('users')
         .where('leagues', 'array-contains', leagueID)

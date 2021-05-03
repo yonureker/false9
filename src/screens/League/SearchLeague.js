@@ -21,7 +21,6 @@ const SearchLeague = () => {
     });
 
     setInitializing(false);
-    console.log(response);
     setResults(response.hits);
   };
 
@@ -91,7 +90,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     padding: '10@s',
-    paddingHorizontal: '30@s',
+    paddingHorizontal: '20@s',
   },
   formContainer: {
     alignItems: 'center',
