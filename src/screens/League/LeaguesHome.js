@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {Text, View, ScrollView, Pressable} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import React, {useLayoutEffect, useState} from 'react';
+import {Pressable, ScrollView, Text, View} from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import firestore from '@react-native-firebase/firestore';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const leaderboardData = [
   {name: 'Leaderboard', numberOfTeams: 'Teams', myRanking: 'My Ranking'},
@@ -23,11 +23,11 @@ const LeaguesHome = ({navigation}) => {
         .collection('users')
         .doc(uid)
         .onSnapshot(async (doc) => {
-          const docData = doc.data();
+          const userData = doc.data();
           setLeagueIDs(doc.data().leagues);
 
           const leagueData = await Promise.all(
-            docData.leagues.map(async (leagueID) => {
+            userData.leagues.map(async (leagueID) => {
               const docRef = await firestore()
                 .collection('leagues')
                 .doc(leagueID)

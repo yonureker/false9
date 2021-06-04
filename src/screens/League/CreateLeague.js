@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
-import {scale, ScaledSheet} from 'react-native-size-matters';
-import {useSelector} from 'react-redux';
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import firestore from '@react-native-firebase/firestore';
-
+import React, {useState} from 'react';
+import {Pressable, Text, TextInput, View} from 'react-native';
+import {scale, ScaledSheet} from 'react-native-size-matters';
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import {useSelector} from 'react-redux';
 import LeagueTypeButton from '../../components/LeagueTypeButton';
 
 const CreateLeague = ({navigation}) => {

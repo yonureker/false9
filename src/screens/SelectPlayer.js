@@ -11,8 +11,9 @@ const SelectPlayer = (props) => {
   const [playerData, setPlayerData] = useState(null);
   const squad = useSelector((state) => state.squad);
   const selectedIndex = useSelector((state) => state.selection.player);
+  const budgetItems = useSelector((state) => state.budget);
   const {players, value} = squad;
-  const {totalBudget} = squad.budget;
+  const totalBudget = Object.values(budgetItems).reduce((a, b) => a + b, 0);
   const {position, replacedPlayerPrice} = props.route.params;
 
   const addPlayertoSquad = (item) => {

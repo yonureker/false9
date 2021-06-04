@@ -30,11 +30,14 @@ const headerStyle = {
 const SquadStack = ({navigation}) => {
   const uid = useSelector((state) => state.user.uid);
   const squad = useSelector((state) => state.squad);
-  const {totalBudget} = squad.budget;
+  const currentRound = useSelector((state) => state.round.current);
+  const budgetItems = useSelector((state) => state.budget);
   const {value, players, captainIndex} = squad;
 
-  const availableBudget = totalBudget - value;
   const dispatch = useDispatch();
+
+  const totalBudget = Object.values(budgetItems).reduce((a, b) => a + b, 0);
+  const availableBudget = totalBudget - value;
 
   // fetch the latest squad data
   useEffect(() => {
@@ -50,6 +53,10 @@ const SquadStack = ({navigation}) => {
         const squadData = squadRef.data();
 
         dispatch({type: 'RECEIVE_SQUAD_DATA', payload: squadData});
+        dispatch({
+          type: 'RECEIVE_BUDGET_DATA',
+          payload: squadData.budget.items,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -116,11 +123,21 @@ const SquadStack = ({navigation}) => {
           ),
           headerRightContainerStyle: {paddingRight: 10},
           headerTitle: (props) => (
-            <HeaderTitle {...props} availableBudget={availableBudget} />
+            <HeaderTitle
+              {...props}
+              title={currentRound}
+              subTitle={availableBudget}
+              type="squad"
+            />
           ),
+          headerBackTitleVisible: false,
         }}
       />
-      <Stack.Screen name="Fixtures" component={Fixtures} />
+      <Stack.Screen
+        name="Fixtures"
+        component={Fixtures}
+        options={{headerBackTitleVisible: false}}
+      />
       <Stack.Screen name="Player Details" component={PlayerDetails} />
       <Stack.Screen
         name="Select Player"
@@ -141,13 +158,14 @@ const SquadStack = ({navigation}) => {
             </View>
           ),
           headerRightContainerStyle: {paddingRight: 10},
+          headerBackTitleVisible: false,
         }}
       />
       <Stack.Screen name="Select Team" component={SelectTeam} />
       <Stack.Screen
         name="Budget"
         component={BudgetStack}
-        options={{headerShown: false}}
+        options={{headerShown: false, headerBackTitleVisible: false}}
       />
     </Stack.Navigator>
   );

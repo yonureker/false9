@@ -1,65 +1,36 @@
 import React from 'react';
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 import {scale} from 'react-native-size-matters';
-import AntDesign from 'react-native-vector-icons/dist/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 
 const BudgetItem = (props) => {
-  const {title, content, buttonText} = props;
+  const {title, content, buttonText, onPress, type, budget, icon} = props;
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        borderWidth: 2,
-        borderColor: '#DDDDDD',
-        // maxWidth: scale(350),
-        minHeight: 100,
-        borderRadius: 10,
-        marginTop: 10,
-        backgroundColor: 'white'
-      }}>
-      <View
-        style={[
-          styles.container,
-          {borderRightWidth: 3, borderRightColor: '#DDDDDD'},
-        ]}>
-        <AntDesign size={45} name="adduser" />
+    <View style={styles.itemContainer}>
+      <View style={[styles.container, styles.itemIconContainer]}>
+        <MaterialIcons size={45} name="login" />
       </View>
       <View style={{flex: 5}}>
-        <View
-          style={{
-            padding: 5,
-            borderBottomWidth: 3,
-            borderBottomColor: '#DDDDDD',
-          }}>
-          <Text style={styles.itemText}>{title}</Text>
+        <View style={styles.itemHeaderContainer}>
+          <View>
+            <Text style={styles.itemTitle}>{title}</Text>
+          </View>
+          {budget[type] !== 0 && (
+            <View>
+              <Text style={styles.itemBudget}>
+                + €{budget[type].toLocaleString()} added!
+              </Text>
+            </View>
+          )}
         </View>
         <View style={{flexDirection: 'row'}}>
           <View style={{flex: 6, padding: 5}}>
-            <Text style={styles.smallItemText}>{content}</Text>
+            <Text style={styles.itemDescription}>{content}</Text>
           </View>
-          <View
-            style={{
-              flex: 2,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Pressable
-              style={{
-                backgroundColor: '#EE6565',
-                minWidth: 60,
-                padding: 2,
-                borderRadius: 5,
-              }}>
-              <Text
-                style={{
-                  color: 'white',
-                  alignSelf: 'center',
-                  fontFamily: 'LexendDeca-Regular',
-                  fontSize: scale(12)
-                }}>
-                {buttonText}
-              </Text>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.button} onPress={onPress}>
+              <Text style={styles.buttonText}>{buttonText}</Text>
             </Pressable>
           </View>
         </View>
@@ -76,13 +47,52 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  itemText: {
+  itemHeaderContainer: {
+    padding: 5,
+    borderBottomWidth: 3,
+    borderBottomColor: '#DDDDDD',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  itemTitle: {
     fontFamily: 'LexendDeca-Regular',
     fontSize: scale(12),
   },
-  smallItemText: {
+  itemBudget: {
+    fontFamily: 'LexendDeca-Regular',
+    fontSize: scale(12),
+    color: 'green',
+  },
+  itemDescription: {
     fontFamily: 'LexendDeca-Regular',
     color: 'gray',
     fontSize: scale(10),
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    borderWidth: 2,
+    borderColor: '#DDDDDD',
+    minHeight: 100,
+    borderRadius: 10,
+    marginTop: 10,
+    backgroundColor: 'white',
+  },
+  itemIconContainer: {borderRightWidth: 3, borderRightColor: '#DDDDDD'},
+  buttonContainer: {
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    backgroundColor: '#EE6565',
+    minWidth: 60,
+    padding: 2,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    alignSelf: 'center',
+    fontFamily: 'LexendDeca-Regular',
+    fontSize: scale(12),
   },
 });

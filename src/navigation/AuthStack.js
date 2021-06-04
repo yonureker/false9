@@ -18,7 +18,7 @@ const headerStyle = {
 const AuthStack = () => {
   return (
     <Stack.Navigator initialRouteName="SignUp" screenOptions={headerStyle}>
-      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Signup / Login" component={SignUp} />
       <Stack.Screen name="PhoneAuth" component={PhoneAuth} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="Verify" component={Verify} />

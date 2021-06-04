@@ -1,5 +1,12 @@
 const initialState = {
   budget: {
+    items: {
+      base: 75000000,
+      ads: 0,
+      dailyLogin: 0,
+      purchased: 0,
+      referrals: 0,
+    },
     totalBudget: 0,
   },
   formation: '4 - 4 - 2',
@@ -33,6 +40,7 @@ const squadReducer = (state = initialState, action) => {
         ...state,
         value: 0,
       };
+
     case 'UPDATE_SQUAD_FORMATION':
       return {
         ...state,

@@ -33,7 +33,16 @@
 				<string>fb485438962836357</string>
 			</array>
 		</dict>
-		<dict/>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Bundle ID</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>org.false9.app</string>
+			</array>
+		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -49,6 +58,8 @@
 	<string>485438962836357</string>
 	<key>FacebookDisplayName</key>
 	<string>False9</string>
+  <key>GADApplicationIdentifier</key>
+  <string>ca-app-pub-9776391059103042~6078670414</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>

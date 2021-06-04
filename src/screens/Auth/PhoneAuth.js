@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {
-  ImageBackground,
-  Text,
-  View,
-  Image,
-  Pressable,
-  TextInput,
-  Alert,
-} from 'react-native';
-import {ScaledSheet} from 'react-native-size-matters';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import auth from '@react-native-firebase/auth';
+import React, {useState} from 'react';
+import {
+  Alert,
+  Image,
+  ImageBackground,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
+import {ScaledSheet} from 'react-native-size-matters';
 
 const backgroundImage = require('../../../assets/false9_background.png');
 const logo = require('../../../assets/false9_logo.png');
@@ -43,7 +42,7 @@ const PhoneAuth = ({navigation}) => {
     try {
       await confirm.confirm(code);
     } catch (error) {
-      Alert.alert('Invalid code. Try again or resend the code.');
+      Alert.alert('Invalid code. Try again or resend the code..');
     }
   }
 

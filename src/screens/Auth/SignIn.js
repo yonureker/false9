@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  ImageBackground,
-  Text,
-  View,
   Image,
-  TextInput,
+  ImageBackground,
   Pressable,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 

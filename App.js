@@ -1,24 +1,26 @@
-import 'react-native-gesture-handler';
-import React, {useState, useEffect} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import {NavigationContainer} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  ImageBackground,
+  Pressable,
   SafeAreaView,
   StatusBar,
-  View,
   Text,
-  ImageBackground,
-  Image,
   TextInput,
-  Pressable,
-  ActivityIndicator,
+  View,
 } from 'react-native';
+import 'react-native-gesture-handler';
+import {ScaledSheet} from 'react-native-size-matters';
 import SplashScreen from 'react-native-splash-screen';
-import {NavigationContainer} from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
+import {useDispatch} from 'react-redux';
 import AuthStack from './src/navigation/AuthStack';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
-import auth from '@react-native-firebase/auth';
-import {ScaledSheet} from 'react-native-size-matters';
-import {useDispatch} from 'react-redux';
 import rounds from './src/util/Rounds';
 
 const backgroundImage = require('./assets/false9_background.png');
@@ -28,7 +30,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(false);
   const [teamNameSaved, setTeamNameSaved] = useState(false);
-  const [teamName, setTeamName] = useState(null);
+  const [teamName, setTeamName] = useState('');
 
   const dispatch = useDispatch();
 
@@ -100,6 +102,13 @@ const App = () => {
             points: 0,
             formation: '4 - 4 - 2',
             budget: {
+              items: {
+                base: 75000000,
+                ads: 0,
+                dailyLogin: 0,
+                purchased: 0,
+                referrals: 0,
+              },
               totalBudget: 75000000,
             },
           });
@@ -113,15 +122,21 @@ const App = () => {
     }
   };
 
-  const addTeamNameOnFirestore = async () => {
+  const addTeamName = async () => {
+    // show loading icon
     setInitializing(true);
-    await firestore()
-      .collection('users')
-      .doc(user.uid)
-      .set({teamName: teamName, leagues: []}, {merge: true});
+    try {
+      const userDoc = firestore().collection('users').doc(user.uid);
 
+      await userDoc.set({teamName: teamName, leagues: []}, {merge: true});
+
+      // remove loading icon
+
+      setTeamNameSaved(true);
+    } catch (error) {
+      Alert.alert(error.message);
+    }
     setInitializing(false);
-    setTeamNameSaved(true);
   };
 
   const fetchRoundTimeStamps = async () => {
@@ -178,8 +193,9 @@ const App = () => {
             <Text style={styles.smallText}>Min 3 & Max 25 characters</Text>
             <Text style={styles.smallText}>Team name must be unique</Text>
           </View>
+
           <View style={styles.button}>
-            <Pressable onPress={() => addTeamNameOnFirestore()}>
+            <Pressable onPress={() => addTeamName()}>
               <Text style={styles.buttonText}>Confirm Team</Text>
             </Pressable>
           </View>
@@ -225,7 +241,7 @@ const styles = ScaledSheet.create({
   },
   form: {
     flex: 3.5,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     maxWidth: '300@ms',
     maxHeight: '250@ms',

@@ -48,6 +48,43 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721218036146:android:2db400eb9df21b02d944ab",
+        "android_client_info": {
+          "package_name": "org.false9.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721218036146-gtqfjiflqvvo1r2h2ha9r96ecp1s4te5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwgXbEMUkEL6pYmvUGBFUNp8mQafiLxk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721218036146-gtqfjiflqvvo1r2h2ha9r96ecp1s4te5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "721218036146-r05p87l6905lh5n1oddve588r6c2u461.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.false9.app"
+              }
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-9776391059103042~1986192796"
     }
   ],
   "configuration_version": "1"

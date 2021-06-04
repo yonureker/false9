@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 
 const Stats = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Stats Screen</Text>
     </View>
   );
@@ -11,4 +11,11 @@ const Stats = () => {
 
 export default Stats;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+});
+

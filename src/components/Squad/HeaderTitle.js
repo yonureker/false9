@@ -3,13 +3,20 @@ import {Text, View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 
 const HeaderTitle = (props) => {
+  const {title, subTitle, type} = props;
+
+  const setText = () => {
+    if (type === 'squad') {
+      return '€' + (subTitle / 1000000).toFixed(2) + 'M available';
+    } else {
+      return 'Total Budget: ' + '€' + (subTitle / 1000000).toFixed(2) + 'M';
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.normalText}>Group Stage - MatchDay 1</Text>
-      <Text style={styles.smallText}>
-        {' '}
-        {'€' + (props.availableBudget / 1000000).toFixed(1) + 'M'} available
-      </Text>
+      <Text style={styles.normalText}>{title}</Text>
+      <Text style={styles.smallText}>{setText()}</Text>
     </View>
   );
 };

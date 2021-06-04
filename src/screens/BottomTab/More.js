@@ -14,7 +14,7 @@ const More = () => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Pressable onPress={() => signOut()}>
         <Text>Sign Out</Text>
       </Pressable>
@@ -24,4 +24,10 @@ const More = () => {
 
 export default More;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+});

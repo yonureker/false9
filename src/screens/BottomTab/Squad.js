@@ -86,8 +86,8 @@ const Squad = ({navigation}) => {
                 <Text style={styles.tacticsText}>{elem}</Text>
               </Pressable>
             ))}
-        </View>
-        <Pressable
+        </View> */}
+        {/* <Pressable
           style={styles.addBudgetContainer}
           onPress={() => navigation.navigate('Budget')}>
           <Text style={styles.tacticsText}>Add Budget</Text>

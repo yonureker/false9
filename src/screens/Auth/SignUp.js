@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+import {GoogleSignin} from '@react-native-community/google-signin';
+import auth from '@react-native-firebase/auth';
+import React from 'react';
 import {
+  Image,
   ImageBackground,
+  Platform,
+  Pressable,
   Text,
   View,
-  Image,
-  Pressable,
-  Platform,
 } from 'react-native';
+import {AccessToken, LoginManager} from 'react-native-fbsdk';
 import {ScaledSheet} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-community/google-signin';
-import {LoginManager, AccessToken} from 'react-native-fbsdk';
-import {appleAuth} from '@invertase/react-native-apple-authentication';
 
 GoogleSignin.configure({
   webClientId:
@@ -83,7 +83,7 @@ const SignUp = ({navigation}) => {
         nonce,
       );
 
-      console.log(appleCredential)
+      console.log(appleCredential);
 
       // Sign the user in with the credential
       return auth().signInWithCredential(appleCredential);
@@ -118,7 +118,12 @@ const SignUp = ({navigation}) => {
               console.log('Signed in with Facebook!'),
             )
           }>
-          <Icon name="facebook-square" size={30} color="white" style={styles.icon} />
+          <Icon
+            name="facebook-square"
+            size={30}
+            color="white"
+            style={styles.icon}
+          />
           <Text style={styles.textInput}>Continue with Facebook</Text>
         </Pressable>
         <Pressable
@@ -146,21 +151,6 @@ const SignUp = ({navigation}) => {
             <Text style={styles.textWithUnderline}>privacy notice</Text>.
           </Text>
         </View>
-        {/* <View style={styles.button}>
-          <Pressable onPress={() => Auth.federatedSignIn({provider: 'Google'})}>
-            <Text style={styles.buttonText}>Continue</Text>
-          </Pressable>
-        </View> */}
-        {/* <View>
-          <Text style={styles.smallText}>
-            Already have an account?{' '}
-            <Text
-              style={styles.textWithUnderline}
-              onPress={() => navigation.navigate('SignIn')}>
-              Sign In
-            </Text>
-          </Text>
-        </View> */}
       </View>
 
       <View style={styles.footer}></View>
@@ -238,7 +228,7 @@ const styles = ScaledSheet.create({
   },
   icon: {
     paddingLeft: '10@ms',
-    paddingRight: '10@ms'
+    paddingRight: '10@ms',
   },
   countryPicker: {
     paddingRight: '5@ms',
