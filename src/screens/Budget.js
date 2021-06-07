@@ -38,15 +38,15 @@ const Budget = () => {
   }, []);
 
   const items = [
-    {
-      title: 'INVITE FRIENDS',
-      description:
-        'Invite your friends and earn €500,000 when they sign up! This bonus applies to every matchday.',
-      buttonText: 'INVITE',
-      type: 'referrals',
-      iconName: 'invite',
-      onPress: () => buildDynamicLink(),
-    },
+    // {
+    //   title: 'INVITE FRIENDS',
+    //   description:
+    //     'Invite your friends and earn €500,000 when they sign up! This bonus applies to every matchday.',
+    //   buttonText: 'INVITE',
+    //   type: 'referrals',
+    //   iconName: 'invite',
+    //   onPress: () => buildDynamicLink(),
+    // },
     {
       title: 'DAILY LOGIN',
       description:
@@ -112,9 +112,6 @@ const Budget = () => {
     Share.share({message: referrerLink});
   };
 
-  // const claimDailyLogin = () => {
-
-  // };
 
   useEffect(() => {
     const eventListener = rewarded.onAdEvent((type, error, reward) => {

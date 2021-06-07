@@ -39,7 +39,6 @@ const SquadStack = ({navigation}) => {
   const totalBudget = Object.values(budgetItems).reduce((a, b) => a + b, 0);
   const availableBudget = totalBudget - value;
 
-  // fetch the latest squad data
   useEffect(() => {
     const fetchSquad = async () => {
       try {
@@ -177,7 +176,7 @@ const styles = ScaledSheet.create({
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 99,
+    zIndex: 90,
   },
   leftContainer: {
     paddingLeft: '20@s',

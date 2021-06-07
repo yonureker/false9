@@ -188,7 +188,7 @@ const styles = ScaledSheet.create({
     left: 0,
     backgroundColor: '#C4C4C4',
     borderBottomRightRadius: '10@ms',
-    zIndex: 99,
+    zIndex: 9,
   },
   sortByContainer: {
     justifyContent: 'center',

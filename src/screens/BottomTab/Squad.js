@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -36,9 +37,13 @@ const Squad = ({navigation}) => {
     '5 - 4 - 1',
   ];
 
-  const updateFormation = async (text) => {
-    await dispatch({type: 'UPDATE_SQUAD_FORMATION', payload: text});
+  const availableFormations = formationOptions.filter(
+    (elem) => elem !== formation,
+  );
 
+  const updateFormation = async (text) => {
+    dispatch({type: 'UPDATE_SQUAD_FORMATION', payload: text});
+    resetSquad();
     setDropDownVisible(!dropDownVisible);
   };
 
@@ -76,34 +81,49 @@ const Squad = ({navigation}) => {
   ) {
     return (
       <ImageBackground source={backgroundImage} style={styles.container}>
-        {/* <View style={styles.tacticsContainer}>
-          <Pressable onPress={() => setDropDownVisible(!dropDownVisible)}>
-            <Text style={styles.tacticsText}>Formation</Text>
-          </Pressable>
-          {dropDownVisible &&
-            formationOptions.map((elem, index) => (
-              <Pressable onPress={() => updateFormation(elem)} key={index}>
-                <Text style={styles.tacticsText}>{elem}</Text>
-              </Pressable>
-            ))}
-        </View> */}
-        {/* <Pressable
-          style={styles.addBudgetContainer}
-          onPress={() => navigation.navigate('Budget')}>
-          <Text style={styles.tacticsText}>Add Budget</Text>
-        </Pressable> */}
         <View style={styles.countDown}>
           <Countdown />
         </View>
-        <Pressable onPress={() => resetSquad()}>
-          <Text style={styles.tacticsText}>Reset Squad</Text>
-        </Pressable>
-        {/* <View>
-          <ImageBackground source={netflixBanner} style={styles.netflixBanner}/>
-        </View> */}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignSelf: 'stretch',
+            justifyContent: 'space-evenly',
+            alignItems: 'flex-start',
+            flex: 0.4,
+            zIndex: 99,
+          }}>
+          <View style={styles.optionButtonsContainer}>
+            <Pressable onPress={() => resetSquad()}>
+              <Text style={styles.tacticsText}>Reset Team</Text>
+            </Pressable>
+          </View>
+          <View style={styles.optionButtonsContainer}>
+            <Pressable onPress={() => setDropDownVisible(!dropDownVisible)}>
+              <Text style={styles.tacticsText}>{formation}</Text>
+            </Pressable>
+            {dropDownVisible &&
+              availableFormations.map((elem, index) => (
+                <Pressable onPress={() => updateFormation(elem)} key={index}>
+                  <Text style={styles.tacticsText}>{elem}</Text>
+                </Pressable>
+              ))}
+          </View>
+          <View style={styles.optionButtonsContainer}>
+            <Pressable onPress={() => navigation.navigate('Budget')}>
+              <Text style={styles.tacticsText}>Add Budget</Text>
+            </Pressable>
+          </View>
+        </View>
         <View style={styles.playerRow}>
           {starterGoalkeeper.map((goalkeeper, index) => (
-            <PlayerSelection key={index} position="Goalkeeper" index={index} />
+            <View>
+              <PlayerSelection
+                key={index}
+                position="Goalkeeper"
+                index={index}
+              />
+            </View>
           ))}
         </View>
         <View style={styles.playerRow}>
@@ -158,39 +178,26 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'flex-start',
   },
-  tacticsContainer: {
-    justifyContent: 'center',
+  optionButtonsContainer: {
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    backgroundColor: '#C4C4C4',
-    borderBottomRightRadius: '10@ms',
-    zIndex: 99,
-  },
-  addBudgetContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    backgroundColor: '#C4C4C4',
-    borderBottomLeftRadius: '10@ms',
-    zIndex: 99,
+    backgroundColor: '#1098AE',
+    borderRadius: 10,
+    borderColor: 'white',
+    borderWidth: 1,
   },
   tacticsText: {
-    paddingHorizontal: '20@s',
+    paddingHorizontal: '10@s',
     paddingVertical: '2@ms',
     fontSize: '12@s',
     fontFamily: 'LexendDeca-Regular',
+    color: 'white',
   },
   countDown: {
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: '15@s',
+    alignItems: 'flex-start',
+    paddingTop: '10@s',
     paddingBottom: '10@s',
-    // position: 'absolute',
-    // top: '20@s',
   },
   netflixBanner: {
     width: '350@s',

@@ -91,7 +91,7 @@ const styles = ScaledSheet.create({
     borderRadius: 50,
     backgroundColor: '#DDDDDD',
     top: '5@vs',
-    zIndex: 98,
+    zIndex: 3,
   },
   playerNameContainer: {
     borderRadius: 6,
@@ -99,6 +99,7 @@ const styles = ScaledSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     minWidth: '70@ms',
+    zIndex: 2
   },
   playerNameText: {
     textAlign: 'center',

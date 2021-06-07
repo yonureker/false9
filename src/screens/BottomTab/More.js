@@ -3,11 +3,11 @@ import {StyleSheet, Text, View, Pressable} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 const More = () => {
-  const signOut = () => {
+  const signOut = async () => {
     try {
-      auth()
-        .signOut()
-        .then(() => console.log('user signed out'));
+      await auth().signOut();
+
+      console.log('signed out');
     } catch (error) {
       console.log(error);
     }
@@ -15,7 +15,7 @@ const More = () => {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => signOut()}>
+      <Pressable onPress={signOut}>
         <Text>Sign Out</Text>
       </Pressable>
     </View>
