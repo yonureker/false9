@@ -90,7 +90,7 @@ const App = () => {
     const currentDate = Math.floor(Date.now() / 1000);
     let index;
 
-    // find the index of current date in a given deadline array
+    // find the index of current date in a given deadline array.
     for (let i = 0; i < deadlines.unixStamps.length; i++) {
       if (currentDate < deadlines.unixStamps[i]) {
         index = i;
