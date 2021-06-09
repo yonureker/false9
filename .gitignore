@@ -33,9 +33,6 @@ local.properties
 
 /ios
 
-android/
-*.hprof
-
 # node.js
 #
 node_modules/
