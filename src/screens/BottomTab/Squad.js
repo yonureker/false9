@@ -117,13 +117,7 @@ const Squad = ({navigation}) => {
         </View>
         <View style={styles.playerRow}>
           {starterGoalkeeper.map((goalkeeper, index) => (
-            <View>
-              <PlayerSelection
-                key={index}
-                position="Goalkeeper"
-                index={index}
-              />
-            </View>
+            <PlayerSelection key={index} position="Goalkeeper" index={index} />
           ))}
         </View>
         <View style={styles.playerRow}>

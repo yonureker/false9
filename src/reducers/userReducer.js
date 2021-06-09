@@ -1,8 +1,4 @@
-const initialState = {
-  user: {
-    uid: '',
-  },
-};
+const initialState = null;
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {

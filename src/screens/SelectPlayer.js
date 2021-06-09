@@ -1,19 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, Pressable, Text, View} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
-import {scale, ScaledSheet} from 'react-native-size-matters';
-import Flag from '../util/Flag';
 import firestore from '@react-native-firebase/firestore';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Pressable, Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { scale, ScaledSheet } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
+import Flag from '../util/Flag';
 
 const SelectPlayer = (props) => {
   const dispatch = useDispatch();
   const [playerData, setPlayerData] = useState(null);
   const squad = useSelector((state) => state.squad);
   const selectedIndex = useSelector((state) => state.selection.player);
-  const budgetItems = useSelector((state) => state.budget);
-  const {players, value} = squad;
-  const totalBudget = Object.values(budgetItems).reduce((a, b) => a + b, 0);
+  const {players, value, budget} = squad;
+  const totalBudget = Object.values(budget.items).reduce((a, b) => a + b, 0);
   const {position, replacedPlayerPrice} = props.route.params;
 
   const addPlayertoSquad = (item) => {

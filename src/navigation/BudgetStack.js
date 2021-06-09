@@ -1,10 +1,10 @@
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {useSelector} from 'react-redux';
-
-import Budget from '../screens/Budget';
-import {scale} from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
+import { useSelector } from 'react-redux';
 import HeaderTitle from '../components/Squad/HeaderTitle';
+import Budget from '../screens/Budget';
+
 
 const Stack = createStackNavigator();
 
@@ -18,7 +18,7 @@ const headerStyle = {
 
 const BudgetStack = ({navigation}) => {
   const currentRound = useSelector((state) => state.round.current);
-  const budgetItems = useSelector((state) => state.budget);
+  const budgetItems = useSelector((state) => state.squad.budget.items);
 
   // const {totalBudget} = budget;
 

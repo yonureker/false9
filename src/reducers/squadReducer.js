@@ -51,6 +51,22 @@ const squadReducer = (state = initialState, action) => {
         ...state,
         captainIndex: action.payload,
       };
+    case 'UPDATE_BUDGET':
+      return {
+        ...state,
+        budget: {
+          ...state.budget,
+          items: {...state.budget.items, [action.budgetItem]: action.payload},
+        },
+      };
+    case 'UPDATE_DAILY_CLAIM':
+      return {
+        ...state,
+        budget: {
+          ...state.budget,
+          lastDailyClaim: action.payload,
+        },
+      };
     default:
       return state;
   }

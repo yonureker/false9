@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 const leaderboardData = [
   {name: 'Leaderboard', numberOfTeams: 'Teams', myRanking: 'My Ranking'},
   {name: 'Global', numberOfTeams: 2383914, myRanking: 12853},
-  {name: 'United States in the house', numberOfTeams: 32494, myRanking: 763},
+  {name: 'United States', numberOfTeams: 32494, myRanking: 763},
 ];
 
 const LeaguesHome = ({navigation}) => {

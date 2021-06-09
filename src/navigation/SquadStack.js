@@ -1,21 +1,19 @@
-import React, {useEffect} from 'react';
-import {View, Text, Pressable, Alert} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
 import firestore from '@react-native-firebase/firestore';
-
+import {createStackNavigator} from '@react-navigation/stack';
+import React, {useEffect} from 'react';
+import {Alert, Pressable, Text, View} from 'react-native';
+import {scale, ScaledSheet} from 'react-native-size-matters';
+import AntDesign from 'react-native-vector-icons/dist/AntDesign';
+import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
+import {useDispatch, useSelector} from 'react-redux';
+import HeaderTitle from '../components/Squad/HeaderTitle';
+import BudgetStack from '../navigation/BudgetStack';
 import Squad from '../screens/BottomTab/Squad';
 import Fixtures from '../screens/Fixtures';
-import SelectPlayer from '../screens/SelectPlayer';
-import BudgetStack from '../navigation/BudgetStack';
-import AntDesign from 'react-native-vector-icons/dist/AntDesign';
-import FontAwesome5 from 'react-native-vector-icons/dist/FontAwesome5';
-import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
-import {ScaledSheet, scale} from 'react-native-size-matters';
-import {useSelector, useDispatch} from 'react-redux';
-
-import SelectTeam from '../screens/SelectTeam';
-import HeaderTitle from '../components/Squad/HeaderTitle';
 import PlayerDetails from '../screens/PlayerDetails';
+import SelectPlayer from '../screens/SelectPlayer';
+import SelectTeam from '../screens/SelectTeam';
 import checkEmptyObject from '../util/checkEmptyObject';
 
 const Stack = createStackNavigator();
@@ -31,12 +29,11 @@ const SquadStack = ({navigation}) => {
   const uid = useSelector((state) => state.user.uid);
   const squad = useSelector((state) => state.squad);
   const currentRound = useSelector((state) => state.round.current);
-  const budgetItems = useSelector((state) => state.budget);
-  const {value, players, captainIndex} = squad;
+  const {value, players, captainIndex, budget} = squad;
 
   const dispatch = useDispatch();
 
-  const totalBudget = Object.values(budgetItems).reduce((a, b) => a + b, 0);
+  const totalBudget = Object.values(budget.items).reduce((a, b) => a + b, 0);
   const availableBudget = totalBudget - value;
 
   useEffect(() => {
@@ -52,10 +49,6 @@ const SquadStack = ({navigation}) => {
         const squadData = squadRef.data();
 
         dispatch({type: 'RECEIVE_SQUAD_DATA', payload: squadData});
-        dispatch({
-          type: 'RECEIVE_BUDGET_DATA',
-          payload: squadData.budget.items,
-        });
       } catch (error) {
         console.log(error);
       }

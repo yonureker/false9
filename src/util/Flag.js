@@ -22,7 +22,6 @@ import Switzerland from '../../assets/NationalTeams/switzerland.svg';
 import Turkey from '../../assets/NationalTeams/turkey.svg';
 import Ukraine from '../../assets/NationalTeams/ukraine.svg';
 import Wales from '../../assets/NationalTeams/wales.svg';
-import {scale} from 'react-native-size-matters';
 
 const flags = {
   Austria: Austria,

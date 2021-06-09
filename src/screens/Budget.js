@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
-import {Alert, ScrollView, Share, StyleSheet, Text, View} from 'react-native';
-import BudgetItem from '../components/Budget/BudgetItem';
-import {useDispatch, useSelector} from 'react-redux';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
 import {RewardedAd, TestIds} from '@react-native-firebase/admob';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
+import React, {useEffect, useState} from 'react';
+import {Alert, ScrollView, Share, StyleSheet} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import BudgetItem from '../components/Budget/BudgetItem';
 
 const adUnitId = __DEV__
   ? TestIds.REWARDED
@@ -18,35 +19,37 @@ const rewarded = RewardedAd.createForAdRequest(adUnitId, {
 const Budget = () => {
   const uid = useSelector((state) => state.user.uid);
   const currentRound = useSelector((state) => state.round.current);
-  const budget = useSelector((state) => state.budget);
+  const budget = useSelector((state) => state.squad.budget);
 
   const [number, setNumber] = useState(0);
 
+  console.log(budget.lastDailyClaim);
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const snapshot = firestore()
-      .collection('users')
-      .doc(uid)
-      .collection('squads')
-      .doc(currentRound)
-      .onSnapshot((doc) => {
-        const squad = doc.data();
-        dispatch({type: 'UPDATE_ADS_BUDGET', payload: squad.budget.items.ads});
-      });
-    return () => snapshot();
-  }, []);
+  // useEffect(() => {
+  //   const snapshot = firestore()
+  //     .collection('users')
+  //     .doc(uid)
+  //     .collection('squads')
+  //     .doc(currentRound)
+  //     .onSnapshot((doc) => {
+  //       const squad = doc.data();
+  //       dispatch({type: 'UPDATE_BUDGET', payload: squad.budget.items.ads});
+  //     });
+  //   return () => snapshot();
+  // }, []);
 
   const items = [
-    // {
-    //   title: 'INVITE FRIENDS',
-    //   description:
-    //     'Invite your friends and earn €500,000 when they sign up! This bonus applies to every matchday.',
-    //   buttonText: 'INVITE',
-    //   type: 'referrals',
-    //   iconName: 'invite',
-    //   onPress: () => buildDynamicLink(),
-    // },
+    {
+      title: 'INVITE FRIENDS',
+      description:
+        'Invite your friends and earn €500,000 when they sign up! This bonus applies to every matchday.',
+      buttonText: 'INVITE',
+      type: 'referrals',
+      iconName: 'invite',
+      onPress: () => buildDynamicLink(),
+    },
     {
       title: 'DAILY LOGIN',
       description:
@@ -54,6 +57,7 @@ const Budget = () => {
       type: 'dailyLogin',
       buttonText: 'CLAIM',
       iconName: 'login',
+      onPress: () => checkDailyClaim(),
     },
     {
       title: 'WATCH ADS',
@@ -95,6 +99,41 @@ const Budget = () => {
     }
   };
 
+  const checkDailyClaim = async () => {
+    const today = moment().format('L');
+
+    // if never claimed add 250K and save the date.
+    if (budget.lastDailyClaim !== today) {
+      try {
+        const docRef = firestore().doc(`users/${uid}/squads/${currentRound}`);
+        await docRef.update({
+          'budget.items.dailyLogin': budget.items.dailyLogin + 250000,
+          'budget.lastDailyClaim': today,
+        });
+
+        dispatch({
+          type: 'UPDATE_BUDGET',
+          budgetItem: 'dailyLogin',
+          payload: budget.items.dailyLogin + 250000,
+        });
+
+        dispatch({
+          type: 'UPDATE_DAILY_CLAIM',
+          payload: today,
+        });
+
+        Alert.alert('Success!', '250000 is added to your budget!');
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      Alert.alert(
+        'Maybe tomorrow?',
+        'You already claimed the daily login budget. Please try again tomorrow.',
+      );
+    }
+  };
+
   const buildDynamicLink = async () => {
     const referrerLink = await dynamicLinks().buildShortLink({
       domainUriPrefix: 'https://false9.page.link',
@@ -112,7 +151,6 @@ const Budget = () => {
     Share.share({message: referrerLink});
   };
 
-
   useEffect(() => {
     const eventListener = rewarded.onAdEvent((type, error, reward) => {
       const docRef = firestore().doc(`users/${uid}/squads/${currentRound}`);
@@ -122,7 +160,12 @@ const Budget = () => {
       }
 
       if (type === 'rewarded_earned_reward') {
-        docRef.update({'budget.items.ads': budget.ads + 250000});
+        docRef.update({'budget.items.ads': budget.items.ads + 250000});
+        dispatch({
+          type: 'UPDATE_BUDGET',
+          budgetItem: 'ads',
+          payload: budget.items.ads + 250000,
+        });
       }
 
       if (type === 'closed') {
@@ -152,7 +195,7 @@ const Budget = () => {
           buttonText={item.buttonText}
           onPress={item.onPress}
           type={item.type}
-          budget={budget}
+          budget={budget.items}
           icon={item.iconName}
         />
       ))}
