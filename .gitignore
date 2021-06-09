@@ -62,6 +62,11 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
+#GS
+ios/GoogleService-Info.plist
+
+android/app/google-services.json
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -80,3 +85,5 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
+
+# misc
