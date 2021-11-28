@@ -1,43 +1,48 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Pressable, FlatList} from 'react-native';
+import {Text, View, Pressable, FlatList} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import {scale, ScaledSheet} from 'react-native-size-matters';
-import faker from 'faker';
+import {ScaledSheet} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 
 const LeagueDetails = ({navigation, route}) => {
   const [leagueUsers, setLeagueUsers] = useState([]);
   const [lastVisible, setLastVisible] = useState(null);
-  const leagueID = useSelector((state) => state.selection.league);
+  const leagueID = useSelector((state) => state.selection.leagueID);
   //
   const fetchLeagueMembers = async () => {
-    const usersSnaphot = await firestore()
-      .collection('users')
-      .where('leagues', 'array-contains', leagueID)
-      .orderBy('points.totalPoints', 'desc')
-      .limit(20)
-      .get();
-
-    const users = usersSnaphot.docs.map((doc) => doc.data());
-    setLastVisible(usersSnaphot.docs[usersSnaphot.docs.length - 1]);
-    setLeagueUsers((prevState) => [...prevState, ...users]);
-  };
-
-  const fetchMoreLeagueMembers = async () => {
-    if (leagueUsers.length >= 20) {
+    try {
       const usersSnaphot = await firestore()
         .collection('users')
         .where('leagues', 'array-contains', leagueID)
         .orderBy('points.totalPoints', 'desc')
-        .startAt(lastVisible)
         .limit(20)
         .get();
 
       const users = usersSnaphot.docs.map((doc) => doc.data());
       setLastVisible(usersSnaphot.docs[usersSnaphot.docs.length - 1]);
       setLeagueUsers((prevState) => [...prevState, ...users]);
-    } else {
-      console.log('end');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchMoreLeagueMembers = async () => {
+    try {
+      if (leagueUsers.length >= 20) {
+        const usersSnaphot = await firestore()
+          .collection('users')
+          .where('leagues', 'array-contains', leagueID)
+          .orderBy('points.totalPoints', 'desc')
+          .startAt(lastVisible)
+          .limit(20)
+          .get();
+
+        const users = usersSnaphot.docs.map((doc) => doc.data());
+        setLastVisible(usersSnaphot.docs[usersSnaphot.docs.length - 1]);
+        setLeagueUsers((prevState) => [...prevState, ...users]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

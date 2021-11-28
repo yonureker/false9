@@ -1,9 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { scale, ScaledSheet } from 'react-native-size-matters';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Alert, Pressable, Text, View} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
+import {scale, ScaledSheet} from 'react-native-size-matters';
+import {useDispatch, useSelector} from 'react-redux';
 import Flag from '../util/Flag';
 
 const SelectPlayer = (props) => {
@@ -11,22 +11,39 @@ const SelectPlayer = (props) => {
   const [playerData, setPlayerData] = useState(null);
   const squad = useSelector((state) => state.squad);
   const selectedIndex = useSelector((state) => state.selection.player);
+  const {position, replacedPlayerPrice, replacedPlayerClub} =
+    props.route.params;
   const {players, value, budget} = squad;
+
   const totalBudget = Object.values(budget.items).reduce((a, b) => a + b, 0);
-  const {position, replacedPlayerPrice} = props.route.params;
 
   const addPlayertoSquad = (item) => {
-    // if player is replacing another player;
-    if (replacedPlayerPrice) {
-      if (item.profile.price > totalBudget - value + replacedPlayerPrice) {
-        Alert.alert("You don't have enough budget to add this player");
-        return;
+    const {price, firstName, lastName, nationalTeam} = item.profile;
+    //teamCount
+
+    const teamCount = {};
+    players.map((player) => {
+      if (player.hasOwnProperty('nationalTeam')) {
+        teamCount[player['nationalTeam']] =
+          (teamCount[player['nationalTeam']] || 0) + 1;
       }
-      // if no player is being replaced.
-    } else {
-      if (item.profile.price > totalBudget - value) {
-        Alert.alert("You don't have enough budget to add this player");
-        return;
+    });
+
+    // if player is not replaced set it to 0.
+    const changedPlayerPrice = replacedPlayerPrice || 0;
+    const changedPlayerClub = replacedPlayerClub || null;
+
+    // if there is not enough budget to add player;
+    if (price > totalBudget - value + changedPlayerPrice) {
+      return Alert.alert("You don't have enough budget to add this player");
+    }
+
+    //
+    if (changedPlayerClub !== nationalTeam) {
+      if (teamCount[nationalTeam] === 4) {
+        return Alert.alert(
+          "You can't have more than 4 players from the same team",
+        );
       }
     }
 
@@ -35,20 +52,17 @@ const SelectPlayer = (props) => {
         type: 'ADD_PLAYER',
         id: selectedIndex,
         payload: {
-          firstName: item.profile.firstName,
-          lastName: item.profile.lastName,
-          nationalTeam: item.profile.nationalTeam,
-          price: item.profile.price,
+          firstName: firstName,
+          lastName: lastName,
+          nationalTeam: nationalTeam,
+          price: price,
           id: item.key,
         },
       });
 
       dispatch({
         type: 'UPDATE_SQUAD_VALUE',
-        payload:
-          replacedPlayerPrice === undefined
-            ? item.profile.price
-            : item.profile.price - replacedPlayerPrice,
+        payload: price - changedPlayerPrice,
       });
 
       props.navigation.navigate('Group Stage - Matchday 1');

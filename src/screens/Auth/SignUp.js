@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
 import {ScaledSheet} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 GoogleSignin.configure({
@@ -23,6 +24,8 @@ const backgroundImage = require('../../../assets/false9_background.png');
 const logo = require('../../../assets/false9_logo.png');
 
 const SignUp = ({navigation}) => {
+  const session = useSelector((state) => state.session);
+
   async function onGoogleButtonPress() {
     // Get the users ID token
     const {idToken} = await GoogleSignin.signIn();
@@ -31,7 +34,7 @@ const SignUp = ({navigation}) => {
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+    auth().signInWithCredential(googleCredential);
   }
 
   async function onFacebookButtonPress() {
@@ -83,8 +86,6 @@ const SignUp = ({navigation}) => {
         nonce,
       );
 
-      console.log(appleCredential);
-
       // Sign the user in with the credential
       return auth().signInWithCredential(appleCredential);
     } catch (error) {
@@ -128,11 +129,7 @@ const SignUp = ({navigation}) => {
         </Pressable>
         <Pressable
           style={[styles.textInputContainer, styles.googleColor]}
-          onPress={() =>
-            onGoogleButtonPress().then(() =>
-              console.log('Signed in with Google!'),
-            )
-          }>
+          onPress={() => onGoogleButtonPress()}>
           <Icon name="google" size={30} color="white" style={styles.icon} />
           <Text style={styles.textInput}>Continue with Google</Text>
         </Pressable>

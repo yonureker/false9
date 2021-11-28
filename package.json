@@ -32,6 +32,7 @@
     "react-native": "0.64.0",
     "react-native-apple-authentication": "^1.0.8",
     "react-native-country-picker-modal": "^2.0.0",
+    "react-native-dialog": "^8.0.1",
     "react-native-fbsdk": "^3.0.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "^2.1.0",

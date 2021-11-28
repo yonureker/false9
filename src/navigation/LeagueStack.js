@@ -3,15 +3,12 @@ import {View, Text, Pressable, Alert} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-
 import LeaguesHome from '../screens/League/LeaguesHome';
 import CreateLeague from '../screens/League/CreateLeague';
 import JoinLeague from '../screens/League/JoinLeague';
 import LeagueDetails from '../screens/League/LeagueDetails';
-import {useSelector} from 'react-redux';
-import firestore, {firebase} from '@react-native-firebase/firestore';
 import SearchLeague from '../screens/League/SearchLeague';
+import HeaderRightIcon from '../components/League/HeaderRightIcon';
 
 const Stack = createStackNavigator();
 
@@ -23,23 +20,6 @@ const headerStyle = {
 };
 
 const LeagueStack = ({navigation}) => {
-  const uid = useSelector((state) => state.user.uid);
-  const leagueID = useSelector((state) => state.selection.league);
-
-  const leaveLeague = async (id) => {
-    const docRef = firestore().collection('users').doc(uid);
-
-    try {
-      docRef
-        .update({
-          leagues: firebase.firestore.FieldValue.arrayRemove(id),
-        })
-        .then(navigation.navigate('Leagues Home'));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <Stack.Navigator
       initialRouteName="Leagues Home"
@@ -54,7 +34,7 @@ const LeagueStack = ({navigation}) => {
                 style={styles.iconContainer}
                 onPress={() => navigation.navigate('Search League')}>
                 <AntDesign name="search1" size={scale(20)} color="white" />
-                <Text style={styles.text}>Join</Text>
+                <Text style={styles.text}>Search</Text>
               </Pressable>
             </View>
           ),
@@ -79,28 +59,7 @@ const LeagueStack = ({navigation}) => {
         name="League Details"
         component={LeagueDetails}
         options={{
-          headerRight: () => (
-            <View style={styles.rightContainer}>
-              <Pressable
-                style={styles.iconContainer}
-                onPress={() =>
-                  Alert.alert(
-                    'Are you sure?',
-                    'Do you want to leave this league?',
-                    [
-                      {
-                        text: 'Leave',
-                        onPress: () => leaveLeague(leagueID),
-                      },
-                      {text: 'Cancel'},
-                    ],
-                  )
-                }>
-                <Ionicons name="exit" size={scale(20)} color="white" />
-                <Text style={styles.text}>Leave</Text>
-              </Pressable>
-            </View>
-          ),
+          headerRight: () => <HeaderRightIcon />,
         }}
       />
     </Stack.Navigator>

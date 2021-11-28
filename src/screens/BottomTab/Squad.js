@@ -8,13 +8,12 @@ import {
   View,
 } from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, batch} from 'react-redux';
 import PlayerSelection from '../../components/Squad/Player';
 import Bench from '../../components/Squad/Bench';
 import Countdown from '../../components/Squad/Countdown';
 
 const backgroundImage = require('../../../assets/soccer_field.png');
-const netflixBanner = require('../../../assets/netflix.png');
 
 const Squad = ({navigation}) => {
   const [dropDownVisible, setDropDownVisible] = useState(false);
@@ -24,8 +23,8 @@ const Squad = ({navigation}) => {
   const [starterForwards, setStarterForwards] = useState(null);
 
   const dispatch = useDispatch();
-  const squad = useSelector((state) => state.squad);
-  const {players, formation} = squad;
+  const players = useSelector((state) => state.squad.players);
+  const formation = useSelector((state) => state.squad.formation);
 
   const formationOptions = [
     '3 - 4 - 3',
@@ -37,6 +36,7 @@ const Squad = ({navigation}) => {
     '5 - 4 - 1',
   ];
 
+  // so we can exclude current formation on the dropdown list
   const availableFormations = formationOptions.filter(
     (elem) => elem !== formation,
   );
@@ -48,9 +48,11 @@ const Squad = ({navigation}) => {
   };
 
   const resetSquad = () => {
-    dispatch({type: 'RESET_SQUAD_DATA', payload: {}});
-    dispatch({type: 'RESET_SQUAD_VALUE'});
-    dispatch({type: 'UPDATE_CAPTAIN_INDEX', payload: null});
+    batch(() => {
+      dispatch({type: 'RESET_SQUAD_DATA', payload: {}});
+      dispatch({type: 'RESET_SQUAD_VALUE'});
+      dispatch({type: 'UPDATE_CAPTAIN_INDEX', payload: null});
+    });
   };
 
   useEffect(() => {

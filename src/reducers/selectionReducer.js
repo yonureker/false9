@@ -1,6 +1,7 @@
 const initialState = {
   player: null,
-  league: null,
+  leagueID: null,
+  privateLeague: null,
 };
 
 const selectionReducer = (state = initialState, action) => {
@@ -10,7 +11,9 @@ const selectionReducer = (state = initialState, action) => {
     case 'RESET_PLAYER_INDEX':
       return {...state, player: null};
     case 'UPDATE_LEAGUE_ID':
-      return {...state, league: action.payload};
+      return {...state, leagueID: action.payload};
+    case 'UPDATE_LEAGUE_TYPE':
+      return {...state, privateLeague: action.payload};
     default:
       return state;
   }

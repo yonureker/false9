@@ -15,6 +15,11 @@ const Player = (props) => {
   const playerProfile = useSelector((state) => state.squad.players[index]);
   const captainIndex = useSelector((state) => state.squad.captainIndex);
 
+  // if player icon is not empty
+  const playerSelected = JSON.stringify(playerProfile) !== '{}';
+
+  const IconStyle = playerSelected ? styles.transparentIcon : styles.roundIcon;
+
   // if player is already selected send to player detail screen
   // if empty, send to select player screen
   const setRoute = () => {
@@ -32,23 +37,16 @@ const Player = (props) => {
 
   return (
     <Pressable style={styles.container} onPress={() => setRoute()}>
-      <View style={styles.roundIcon}>
-        {JSON.stringify(playerProfile) !== '{}' ? (
+      <View style={IconStyle}>
+        {playerSelected ? (
           <Flag
             country={playerProfile.nationalTeam}
-            width="100%"
-            height="100%"
+            width={scale(35)}
+            height={scale(35)}
           />
         ) : null}
         {captainIndex === index && (
-          <View
-            style={{
-              position: 'absolute',
-              top: -5,
-              right: -5,
-              backgroundColor: 'white',
-              borderRadius: 20,
-            }}>
+          <View style={styles.captainIconContainer}>
             <MaterialCommunityIcons
               name="alpha-c-circle"
               size={scale(15)}
@@ -59,13 +57,11 @@ const Player = (props) => {
       </View>
       <View style={styles.playerNameContainer}>
         <Text style={styles.playerNameText}>
-          {JSON.stringify(playerProfile) !== '{}'
-            ? playerProfile.lastName.toUpperCase()
-            : null}
+          {playerSelected ? playerProfile.lastName.toUpperCase() : null}
         </Text>
       </View>
       <View style={styles.container}>
-        {JSON.stringify(playerProfile) !== '{}' && (
+        {playerSelected && (
           <View style={styles.priceContainer}>
             <Text style={styles.priceText}>
               {'€' + (playerProfile.price / 1000000).toFixed(1) + 'M'}
@@ -89,7 +85,15 @@ const styles = ScaledSheet.create({
     width: '35@s',
     height: '35@s',
     borderRadius: 50,
-    backgroundColor: '#DDDDDD',
+    backgroundColor: 'white',
+    top: '5@vs',
+    zIndex: 3,
+  },
+  transparentRoundIcon: {
+    width: '35@s',
+    height: '35@s',
+    borderRadius: 50,
+    backgroundColor: null,
     top: '5@vs',
     zIndex: 3,
   },
@@ -99,7 +103,7 @@ const styles = ScaledSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     minWidth: '70@ms',
-    zIndex: 2
+    zIndex: 2,
   },
   playerNameText: {
     textAlign: 'center',
@@ -123,5 +127,12 @@ const styles = ScaledSheet.create({
     paddingHorizontal: '3@ms',
     fontSize: '9@ms',
     fontFamily: 'LexendDeca-Regular',
+  },
+  captainIconContainer: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    backgroundColor: 'white',
+    borderRadius: 20,
   },
 });

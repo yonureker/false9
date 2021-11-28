@@ -1,19 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import auth from '@react-native-firebase/auth';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 import firestore from '@react-native-firebase/firestore';
 import {NavigationContainer} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
-  Alert,
-  Image,
   ImageBackground,
-  Pressable,
   SafeAreaView,
   StatusBar,
-  Text,
-  TextInput,
-  View,
 } from 'react-native';
 import 'react-native-gesture-handler';
 import {ScaledSheet} from 'react-native-size-matters';
@@ -23,7 +18,6 @@ import AuthStack from './src/navigation/AuthStack';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import TeamName from './src/screens/TeamName';
 import createNewUser from './src/util/createNewUser';
-import rounds from './src/util/Rounds';
 
 const backgroundImage = require('./assets/false9_background.png');
 const logo = require('./assets/false9_logo.png');
@@ -31,74 +25,63 @@ const logo = require('./assets/false9_logo.png');
 const App = () => {
   // const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(false);
-  const [teamNameSaved, setTeamNameSaved] = useState(false);
-  const [teamName, setTeamName] = useState('');
+  const [user, setUser] = useState(auth().currentUser);
+  const referrerID = useRef(null);
 
-  const user = useSelector((state) => state.user);
+  const teamName = useSelector((state) => state.user.teamName);
 
   const dispatch = useDispatch();
+
+  // update user slice of state when user logs in and check if user has set a team name
+  function onAuthStateChanged(userData) {
+    setUser(userData);
+    if (userData) {
+      dispatch({type: 'RECEIVE_SESSION_DATA', payload: userData._user});
+      checkUserOnFirestore(userData);
+    }
+  }
+
+  // listen for log in / log out
+  useLayoutEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  useEffect(() => {
+    dynamicLinks()
+      .getInitialLink()
+      .then((link) => {
+        if (link !== null) {
+          referrerID.current = link.url.split('=').pop();
+        }
+      });
+  }, []);
 
   useEffect(() => {
     SplashScreen.hide();
   }, []);
 
-  // listen for log in / log out
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-  // fetch the start time for each week
-  useEffect(() => {
-    if (user) {
-      fetchRoundTimeStamps();
-    }
-  }, [user]);
-
-  // update user slice of state when user logs in and check if user has created a team
-  function onAuthStateChanged(userData) {
-    if (userData) {
-      dispatch({type: 'RECEIVE_USER_DATA', payload: userData._user});
-      checkUserOnFirestore(userData);
-    }
-  }
-
   const checkUserOnFirestore = async (user) => {
     setInitializing(true);
     const doc = await firestore().collection('users').doc(user.uid).get();
 
-    setInitializing(false);
-
     if (doc.exists) {
       const data = doc.data();
 
-      if (data.teamName) {
-        setTeamNameSaved(true);
+      if (data.teamName !== null) {
+        fetchUserData(user);
       }
     } else {
-      setTeamNameSaved(false);
-      createNewUser(user);
+      createNewUser(user, referrerID.current);
     }
+    setInitializing(false);
   };
 
-  const fetchRoundTimeStamps = async () => {
-    // get deadlines for each round
-    const docRef = await firestore().collection('deadlines').doc('v1').get();
-    const deadlines = docRef.data();
+  const fetchUserData = async (user) => {
+    const userRef = await firestore().collection('users').doc(user.uid).get();
+    const userDetails = userRef.data();
 
-    // get current date
-    const currentDate = Math.floor(Date.now() / 1000);
-    let index;
-
-    // find the index of current date in a given deadline array.
-    for (let i = 0; i < deadlines.unixStamps.length; i++) {
-      if (currentDate < deadlines.unixStamps[i]) {
-        index = i;
-        break;
-      }
-    }
-
-    dispatch({type: 'GET_ROUND', payload: rounds[index]});
+    dispatch({type: 'RECEIVE_USER_DATA', payload: userDetails});
   };
 
   if (initializing) {
@@ -111,7 +94,7 @@ const App = () => {
     );
   }
 
-  if (user && !teamNameSaved) {
+  if (user && teamName === null) {
     return <TeamName />;
   }
 

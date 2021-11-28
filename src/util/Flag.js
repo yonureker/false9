@@ -1,58 +1,67 @@
-import Austria from '../../assets/NationalTeams/austria.svg';
-import Belgium from '../../assets/NationalTeams/belgium.svg';
-import Croatia from '../../assets/NationalTeams/croatia.svg';
-import Czech_Republic from '../../assets/NationalTeams/czech_republic.svg';
-import Denmark from '../../assets/NationalTeams/denmark.svg';
-import England from '../../assets/NationalTeams/england.svg';
-import Finland from '../../assets/NationalTeams/finland.svg';
-import France from '../../assets/NationalTeams/france.svg';
-import Germany from '../../assets/NationalTeams/germany.svg';
-import Hungary from '../../assets/NationalTeams/hungary.svg';
-import Italy from '../../assets/NationalTeams/italy.svg';
-import Netherlands from '../../assets/NationalTeams/netherlands.svg';
-import North_Macedonia from '../../assets/NationalTeams/north_macedonia.svg';
-import Poland from '../../assets/NationalTeams/poland.svg';
-import Portugal from '../../assets/NationalTeams/portugal.svg';
-import Russia from '../../assets/NationalTeams/russia.svg';
-import Scotland from '../../assets/NationalTeams/scotland.svg';
-import Slovakia from '../../assets/NationalTeams/slovakia.svg';
-import Spain from '../../assets/NationalTeams/spain.svg';
-import Sweden from '../../assets/NationalTeams/sweden.svg';
-import Switzerland from '../../assets/NationalTeams/switzerland.svg';
-import Turkey from '../../assets/NationalTeams/turkey.svg';
-import Ukraine from '../../assets/NationalTeams/ukraine.svg';
-import Wales from '../../assets/NationalTeams/wales.svg';
+import Barnsley from '../../assets/clubs/barnsley.png';
+import Birmingham_City from '../../assets/clubs/birmingham_city.png';
+import Blackburn_Rovers from '../../assets/clubs/blackburn_rovers.png';
+import Blackpool from '../../assets/clubs/blackpool.png';
+import Bournemouth from '../../assets/clubs/bournemouth.png';
+import Bristol_City from '../../assets/clubs/bristol_city.png';
+import Cardiff_City from '../../assets/clubs/cardiff_city.png';
+import Coventry_City from '../../assets/clubs/coventry_city.png';
+import Derby_County from '../../assets/clubs/derby_county.png';
+import Fulham from '../../assets/clubs/fulham.png';
+import Huddersfield_Town from '../../assets/clubs/huddersfield_town.png';
+import Hull_City from '../../assets/clubs/hull_city.png';
+import Luton_Town from '../../assets/clubs/luton_town.png';
+import Middlesborough from '../../assets/clubs/middlesbrough.png';
+import Millwall from '../../assets/clubs/millwall.png';
+import Nottingham_Forest from '../../assets/clubs/nottingham_forest.png';
+import Peterborough_United from '../../assets/clubs/peterborough_united.png';
+import Preston_North_End from '../../assets/clubs/preston_north_end.png';
+import Queens_Park_Rangers from '../../assets/clubs/queens_park_rangers.png';
+import Reading from '../../assets/clubs/reading.png';
+import Sheffield_United from '../../assets/clubs/sheffield_united.png';
+import Stoke_City from '../../assets/clubs/stoke_city.png';
+import Swansea_City from '../../assets/clubs/swansea_city.png';
+import West_Bromwich_Albion from '../../assets/clubs/west_bromwich_albion.png';
 
 const flags = {
-  Austria: Austria,
-  Belgium: Belgium,
-  Croatia: Croatia,
-  'Czech Republic': Czech_Republic,
-  Denmark: Denmark,
-  England: England,
-  Finland: Finland,
-  France: France,
-  Germany: Germany,
-  Hungary: Hungary,
-  Italy: Italy,
-  Netherlands: Netherlands,
-  'North Macedonia': North_Macedonia,
-  Poland: Poland,
-  Portugal: Portugal,
-  Russia: Russia,
-  Scotland: Scotland,
-  Slovakia: Slovakia,
-  Spain: Spain,
-  Sweden: Sweden,
-  Switzerland: Switzerland,
-  Turkey: Turkey,
-  Ukraine: Ukraine,
-  Wales: Wales,
+  Barnsley: Barnsley,
+  'Birmingham City': Birmingham_City,
+  'Blackburn Rovers': Blackburn_Rovers,
+  Blackpool: Blackpool,
+  Bournemouth: Bournemouth,
+  'Bristol City': Bristol_City,
+  'Cardiff City': Cardiff_City,
+  'Coventry City': Coventry_City,
+  'Derby County': Derby_County,
+  Fulham: Fulham,
+  'Huddersfield Town': Huddersfield_Town,
+  'Hull City': Hull_City,
+  'Luton Town': Luton_Town,
+  Middlesborough: Middlesborough,
+  Millwall: Millwall,
+  'Nottingham Forest': Nottingham_Forest,
+  'Peterborough United': Peterborough_United,
+  'Preston North End': Preston_North_End,
+  'Queens Park Rangers': Queens_Park_Rangers,
+  Reading: Reading,
+  'Sheffield United': Sheffield_United,
+  'Stoke City': Stoke_City,
+  'Swansea City': Swansea_City,
+  'West Bromwich Albion': West_Bromwich_Albion,
 };
 
 import React from 'react';
+import {ImageBackground} from 'react-native';
 
 export default function Flag(props) {
-  const CountryFlag = flags[props.country];
-  return <CountryFlag width={props.width} height={props.height} />;
+  return (
+    <ImageBackground
+      source={flags[props.country]}
+      style={{width: props.width, height: props.height}}
+      // width={props.width}
+      // height={props.height}
+    />
+  );
+  // const CountryFlag = flags[props.country];
+  // return <CountryFlag width={props.width} height={props.height} />;
 }

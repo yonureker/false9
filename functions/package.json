@@ -10,9 +10,9 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "12"
+    "node": "10"
   },
-  "main": "index.js",
+  "main": "index.tsx",
   "dependencies": {
     "algoliasearch": "^4.9.0",
     "firebase-admin": "^9.2.0",

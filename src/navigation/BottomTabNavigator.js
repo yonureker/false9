@@ -19,7 +19,10 @@ function BottomTabNavigator() {
     <Tab.Navigator
       initialRouteName="Squad"
       tabBarOptions={{
-        style: {backgroundColor: '#1098AE', height: scale(60)},
+        style: {
+          backgroundColor: '#1098AE',
+          height: scale(60),
+        },
         labelStyle: {
           color: 'white',
           fontFamily: 'LexendDeca-Regular',

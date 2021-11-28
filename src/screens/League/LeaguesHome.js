@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pressable, ScrollView, Text, View} from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
@@ -14,10 +14,10 @@ const leaderboardData = [
 const LeaguesHome = ({navigation}) => {
   const [leagueDetails, setLeagueDetails] = useState([]);
   const [leagueIDs, setLeagueIDs] = useState([]);
-  const uid = useSelector((state) => state.user.uid);
+  const uid = useSelector((state) => state.session.uid);
   const dispatch = useDispatch();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     try {
       const snapshot = firestore()
         .collection('users')
@@ -25,6 +25,8 @@ const LeaguesHome = ({navigation}) => {
         .onSnapshot(async (doc) => {
           const userData = doc.data();
           setLeagueIDs(doc.data().leagues);
+
+          dispatch({type: 'UPDATE_USER_LEAGUES', payload: doc.data().leagues});
 
           const leagueData = await Promise.all(
             userData.leagues.map(async (leagueID) => {
@@ -44,7 +46,7 @@ const LeaguesHome = ({navigation}) => {
     } catch (error) {
       console.log(error);
     }
-  }, [uid]);
+  }, [dispatch, uid]);
 
   const navigateToLeagueDetails = (id) => {
     dispatch({type: 'UPDATE_LEAGUE_ID', payload: id});

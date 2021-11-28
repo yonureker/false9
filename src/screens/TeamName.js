@@ -11,29 +11,26 @@ import {
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {ScaledSheet} from 'react-native-size-matters';
+import {useDispatch, useSelector} from 'react-redux';
 
 const TeamName = () => {
-  const [initializing, setInitializing] = useState(false);
   const [teamName, setTeamName] = useState('');
+  const session = useSelector((state) => state.session);
+
+  const dispatch = useDispatch();
 
   const backgroundImage = require('../../assets/false9_background.png');
   const logo = require('../../assets/false9_logo.png');
 
   const addTeamName = async () => {
-    // show loading icon
-    setInitializing(true);
     try {
-      const userDoc = firestore().collection('users').doc(user.uid);
+      const userDoc = firestore().collection('users').doc(session.uid);
 
       await userDoc.set({teamName: teamName, leagues: []}, {merge: true});
-
-      // remove loading icon
-
-      setTeamNameSaved(true);
+      dispatch({type: 'UPDATE_TEAM_NAME', payload: teamName});
     } catch (error) {
       Alert.alert(error.message);
     }
-    setInitializing(false);
   };
 
   return (

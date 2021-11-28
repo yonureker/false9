@@ -3,15 +3,18 @@ import {ActivityIndicator, Text, View} from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
 import firestore from '@react-native-firebase/firestore';
 import Flag from '../util/Flag';
+import {useSelector} from 'react-redux';
 
 const Fixtures = () => {
   const [fixtures, setFixtures] = useState(null);
+
+  const currentRound = useSelector((state) => state.round.current);
 
   const fetchFixtures = async () => {
     try {
       const fixturesData = await firestore()
         .collection('fixtures')
-        .doc('Group stage - Matchday 1')
+        .doc(currentRound)
         .get();
 
       setFixtures(fixturesData.data());
@@ -35,7 +38,7 @@ const Fixtures = () => {
   return (
     <View style={styles.container}>
       <View style={styles.fixturesHeaderContainer}>
-        <Text style={styles.fixturesHeaderText}>Group stage - Matchday 1</Text>
+        <Text style={styles.fixturesHeaderText}>{currentRound}</Text>
       </View>
       <View style={styles.fixturesContainer}>
         {fixtures.matches.map((match, index) => (

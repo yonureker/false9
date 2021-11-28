@@ -606,7 +606,7 @@ PODS:
     - React-jsi (= 0.64.0)
     - React-perflogger (= 0.64.0)
   - React-jsinspector (0.64.0)
-  - react-native-apple-authentication (1.0.8):
+  - react-native-apple-authentication (1.1.0):
     - React
   - react-native-fbsdk (3.0.0):
     - React
@@ -696,34 +696,34 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
-  - RNCPicker (1.15.0):
+  - RNCPicker (1.16.1):
     - React-Core
-  - RNFBAdMob (11.4.1):
+  - RNFBAdMob (11.5.0):
     - Firebase/AdMob (= 7.11.0)
     - PersonalizedAdConsent (~> 1.0.5)
     - React-Core
     - RNFBApp
-  - RNFBAnalytics (11.4.1):
+  - RNFBAnalytics (11.5.0):
     - Firebase/Analytics (= 7.11.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (11.4.1):
+  - RNFBApp (11.5.0):
     - Firebase/CoreOnly (= 7.11.0)
     - React-Core
-  - RNFBAuth (11.4.1):
+  - RNFBAuth (11.5.0):
     - Firebase/Auth (= 7.11.0)
     - React-Core
     - RNFBApp
-  - RNFBDynamicLinks (11.4.1):
+  - RNFBDynamicLinks (11.5.0):
     - Firebase/DynamicLinks (= 7.11.0)
     - GoogleUtilities/AppDelegateSwizzler
     - React-Core
     - RNFBApp
-  - RNFBFirestore (11.4.1):
+  - RNFBFirestore (11.5.0):
     - Firebase/Firestore (= 7.11.0)
     - React-Core
     - RNFBApp
-  - RNFBFunctions (11.4.1):
+  - RNFBFunctions (11.5.0):
     - Firebase/Functions (= 7.11.0)
     - React-Core
     - RNFBApp
@@ -732,7 +732,7 @@ PODS:
   - RNGoogleSignin (5.0.0):
     - GoogleSignIn (~> 5.0.0)
     - React-Core
-  - RNReanimated (2.1.0):
+  - RNReanimated (2.2.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -761,8 +761,9 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.1.1):
+  - RNScreens (3.3.0):
     - React-Core
+    - React-RCTImage
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (8.1.0):
@@ -964,7 +965,7 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
-  FBReactNativeSpec: 755fd7e377a54b846a06f3f00b5b21750a70f67e
+  FBReactNativeSpec: ea2b1848f443d3930a4f98dc9b8d1478bc730660
   FBSDKCoreKit: 4afd6ff53d8133a433dbcda44451c9498f8c6ce4
   FBSDKLoginKit: 7181765f2524d7ebf82d9629066c8e6caafc99d0
   FBSDKShareKit: 0c0d51b3af47075a85ed9bea0e28b2fc70e3594b
@@ -1003,7 +1004,7 @@ SPEC CHECKSUMS:
   React-jsi: 74341196d9547cbcbcfa4b3bbbf03af56431d5a1
   React-jsiexecutor: 06a9c77b56902ae7ffcdd7a4905f664adc5d237b
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
-  react-native-apple-authentication: be849b8aefe45de190f8125126ef8cf8b02674ec
+  react-native-apple-authentication: 7166be89166ebe8ba66ded0f5c01ef5aea779353
   react-native-fbsdk: 8e92c7a334fd8d9c2b5d8b8fcd7ae2c314161099
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
@@ -1022,22 +1023,22 @@ SPEC CHECKSUMS:
   ReactCommon: cfe2b7fd20e0dbd2d1185cd7d8f99633fbc5ff05
   RNAppleAuthentication: e95bcfbd044013667f35c5ca20ae17d39500c009
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
-  RNCPicker: 5256da29a92406cac439ac6605719e233714a86a
-  RNFBAdMob: bbc64554e13d019d37fbc981f5f48ba4c6ea5889
-  RNFBAnalytics: 1190435dcd25d7403d28ceb4342c0d1e050843de
-  RNFBApp: 996860ad6832996faba79ef3f6ec2d3ea5870dd9
-  RNFBAuth: 3726f7f9bc9e9efb80cd1f5b2e65c4b04dc53760
-  RNFBDynamicLinks: e6c9cd9cba02cc65f8b76fbd22cf50a66d473bdd
-  RNFBFirestore: 7fa546e352aad031a78b934a67435e55b32cba49
-  RNFBFunctions: 4838dd472870e5941908eabc48d1711dacdda558
+  RNCPicker: 61c7a0645b9e4ac67960aa7f22a3effcecfdfb8d
+  RNFBAdMob: a2b5f148468b16d02543707d4627bc9a19016bf3
+  RNFBAnalytics: 3e250066a98d6ea0a7816c52de75f2633f726580
+  RNFBApp: 9c90f9d576861947ba75fe0830567c570bcbcf6d
+  RNFBAuth: 99fdbce04ff3d39e57a7a3956d632ee69145685b
+  RNFBDynamicLinks: 53f5621a2ab44b6f967f2240f1b7d56f8b6c74de
+  RNFBFirestore: bedb9727c0df9a1f1ec23b5e23988075a4cbea78
+  RNFBFunctions: 570969b0b7a104066374d4f6e840d6d8a217e3ad
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
-  RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
-  RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
+  RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
+  RNScreens: bf59f17fbf001f1025243eeed5f19419d3c11ef2
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
 
 PODFILE CHECKSUM: af09ad52d0800a0ecc806ef7ff20eac52b7a90f8
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import firestore from '@react-native-firebase/firestore';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
@@ -15,6 +16,7 @@ import PlayerDetails from '../screens/PlayerDetails';
 import SelectPlayer from '../screens/SelectPlayer';
 import SelectTeam from '../screens/SelectTeam';
 import checkEmptyObject from '../util/checkEmptyObject';
+import rounds from '../util/Rounds';
 
 const Stack = createStackNavigator();
 
@@ -26,7 +28,7 @@ const headerStyle = {
 };
 
 const SquadStack = ({navigation}) => {
-  const uid = useSelector((state) => state.user.uid);
+  const uid = useSelector((state) => state.session.uid);
   const squad = useSelector((state) => state.squad);
   const currentRound = useSelector((state) => state.round.current);
   const {value, players, captainIndex, budget} = squad;
@@ -37,25 +39,31 @@ const SquadStack = ({navigation}) => {
   const availableBudget = totalBudget - value;
 
   useEffect(() => {
-    const fetchSquad = async () => {
-      try {
-        const squadRef = await firestore()
-          .collection('users')
-          .doc(uid)
-          .collection('squads')
-          .doc('Group stage - Matchday 1')
-          .get();
-
-        const squadData = squadRef.data();
-
-        dispatch({type: 'RECEIVE_SQUAD_DATA', payload: squadData});
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchSquad();
+    fetchRoundTimeStamps();
   }, []);
+
+  useEffect(() => {
+    if (currentRound) {
+      const fetchSquad = async () => {
+        try {
+          const squadRef = await firestore()
+            .collection('users')
+            .doc(uid)
+            .collection('squads')
+            .doc(currentRound)
+            .get();
+
+          const squadData = squadRef.data();
+
+          dispatch({type: 'RECEIVE_SQUAD_DATA', payload: squadData});
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchSquad();
+    }
+  }, [currentRound, uid]);
 
   const saveSquadToFirestore = async () => {
     // starter players array
@@ -86,6 +94,26 @@ const SquadStack = ({navigation}) => {
     } else {
       Alert.alert('You need at least 11 starters to save your squad.');
     }
+  };
+
+  const fetchRoundTimeStamps = async () => {
+    // get deadlines for each round
+    const docRef = await firestore().collection('deadlines').doc('v1').get();
+    const deadlines = docRef.data();
+
+    // get current date
+    const currentDate = Math.floor(Date.now() / 1000);
+    let index;
+
+    // find the index of current date in a given deadline array.
+    for (let i = 0; i < deadlines.unixStamps.length; i++) {
+      if (currentDate < deadlines.unixStamps[i]) {
+        index = i;
+        break;
+      }
+    }
+
+    dispatch({type: 'GET_ROUND', payload: rounds[index]});
   };
 
   return (

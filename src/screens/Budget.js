@@ -17,28 +17,38 @@ const rewarded = RewardedAd.createForAdRequest(adUnitId, {
 });
 
 const Budget = () => {
-  const uid = useSelector((state) => state.user.uid);
+  const [number, setNumber] = useState(0);
+  const uid = useSelector((state) => state.session.uid);
   const currentRound = useSelector((state) => state.round.current);
   const budget = useSelector((state) => state.squad.budget);
-
-  const [number, setNumber] = useState(0);
-
-  console.log(budget.lastDailyClaim);
+  const referralAmount = useSelector((state) => state.user.referralAmount);
+  const {referrals} = budget.items;
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const snapshot = firestore()
-  //     .collection('users')
-  //     .doc(uid)
-  //     .collection('squads')
-  //     .doc(currentRound)
-  //     .onSnapshot((doc) => {
-  //       const squad = doc.data();
-  //       dispatch({type: 'UPDATE_BUDGET', payload: squad.budget.items.ads});
-  //     });
-  //   return () => snapshot();
-  // }, []);
+  useEffect(() => {
+    const snapshot = firestore()
+      .collection('users')
+      .doc(uid)
+      .collection('squads')
+      .doc(currentRound)
+      .onSnapshot((doc) => {
+        dispatch({type: 'UPDATE_BUDGET', payload: doc.data().budget});
+      });
+    return () => snapshot();
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (referralAmount * 500000 !== referrals) {
+        const docRef = firestore().doc(`users/${uid}/squads/${currentRound}`);
+
+        docRef.update({'budget.items.referrals': referralAmount * 500000});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const items = [
     {
@@ -47,7 +57,7 @@ const Budget = () => {
         'Invite your friends and earn €500,000 when they sign up! This bonus applies to every matchday.',
       buttonText: 'INVITE',
       type: 'referrals',
-      iconName: 'invite',
+      iconName: 'email-plus-outline',
       onPress: () => buildDynamicLink(),
     },
     {
@@ -56,7 +66,7 @@ const Budget = () => {
         'Simply login to the app and earn extra budget of €250,000 everyday!',
       type: 'dailyLogin',
       buttonText: 'CLAIM',
-      iconName: 'login',
+      iconName: 'cellphone-text',
       onPress: () => checkDailyClaim(),
     },
     {
@@ -64,7 +74,7 @@ const Budget = () => {
       description: 'Earn €250,000 each time you watch a video ad!',
       buttonText: 'WATCH',
       type: 'ads',
-      iconName: 'ads',
+      iconName: 'youtube-tv',
       onPress: () => checkAdStatus(),
     },
     {
@@ -72,7 +82,7 @@ const Budget = () => {
       description:
         'You can purchase additional budget for $0.99. This bonus is applicable only for one round. An additional budget of €5,000,000 will be added.',
       type: 'purchased',
-      iconName: 'purchase',
+      iconName: 'wallet-outline',
       buttonText: '€0.99',
     },
     {
@@ -81,6 +91,7 @@ const Budget = () => {
         'You can purchase additional budget for $0.99. This bonus is applicable only for one round. An additional budget of €5,000,000 will be added.',
       type: 'purchased',
       buttonText: '€0.99',
+      iconName: 'wallet-outline',
     },
     {
       title: 'PURCHASE BUDGET',
@@ -88,11 +99,12 @@ const Budget = () => {
         'You can purchase additional budget for $0.99. This bonus is applicable only for one round. An additional budget of €5,000,000 will be added.',
       type: 'purchased',
       buttonText: '€0.99',
+      iconName: 'wallet-outline',
     },
   ];
 
   const checkAdStatus = () => {
-    if (budget.ads >= 3000000) {
+    if (budget.items.ads >= 3000000) {
       Alert.alert('You hit the maximum');
     } else {
       rewarded.show();
@@ -111,18 +123,18 @@ const Budget = () => {
           'budget.lastDailyClaim': today,
         });
 
-        dispatch({
-          type: 'UPDATE_BUDGET',
-          budgetItem: 'dailyLogin',
-          payload: budget.items.dailyLogin + 250000,
-        });
+        // dispatch({
+        //   type: 'UPDATE_BUDGET',
+        //   budgetItem: 'dailyLogin',
+        //   payload: budget.items.dailyLogin + 250000,
+        // });
 
         dispatch({
-          type: 'UPDATE_DAILY_CLAIM',
+          type: 'UPDATE_LAST_DAILY_CLAIM_DATE',
           payload: today,
         });
 
-        Alert.alert('Success!', '250000 is added to your budget!');
+        Alert.alert('Success!', '$250,000 is added to your budget!');
       } catch (error) {
         console.log(error);
       }
@@ -161,11 +173,6 @@ const Budget = () => {
 
       if (type === 'rewarded_earned_reward') {
         docRef.update({'budget.items.ads': budget.items.ads + 250000});
-        dispatch({
-          type: 'UPDATE_BUDGET',
-          budgetItem: 'ads',
-          payload: budget.items.ads + 250000,
-        });
       }
 
       if (type === 'closed') {

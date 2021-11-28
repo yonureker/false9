@@ -1,28 +1,42 @@
 import firestore from '@react-native-firebase/firestore';
-import React, {useState} from 'react';
-import {Pressable, Text, TextInput, View} from 'react-native';
-import {scale, ScaledSheet} from 'react-native-size-matters';
+import React, { useState } from 'react';
+import {
+  Alert, KeyboardAvoidingView, Pressable,
+  Text,
+  TextInput,
+  View
+} from 'react-native';
+import { scale, ScaledSheet } from 'react-native-size-matters';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import LeagueTypeButton from '../../components/LeagueTypeButton';
 
 const CreateLeague = ({navigation}) => {
-  const [publicLeague, setPublicLeague] = useState(true);
-  const [privateLeague, setPrivateLeague] = useState(false);
-  const [leagueName, setLeagueName] = useState(null);
+  const [leagueName, setLeagueName] = useState('');
+  const [privateLeague, setPrivateLeague] = useState(true);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const uid = useSelector((state) => state.user.uid);
+  const uid = useSelector((state) => state.session.uid);
 
   const toggleLeagueType = () => {
-    setPublicLeague(!publicLeague);
     setPrivateLeague(!privateLeague);
     setPassword('');
     setConfirmPassword('');
   };
 
   const createLeague = async () => {
+    if (leagueName.length < 3) {
+      return Alert.alert(
+        'League name is too short',
+        'It must be at least 3 letters long',
+      );
+    }
+
+    if (privateLeague && password !== confirmPassword) {
+      return Alert.alert('Make sure passwords are matching');
+    }
+
     try {
       const batch = firestore().batch();
 
@@ -32,7 +46,7 @@ const CreateLeague = ({navigation}) => {
         leagueName: leagueName,
         ownerID: uid,
         password: password,
-        private: privateLeague,
+        privateLeague: privateLeague,
         teamCount: 1,
       });
 
@@ -53,12 +67,13 @@ const CreateLeague = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={{justifyContent: 'flex-start', minHeight: 400}}>
+      <KeyboardAvoidingView
+        style={{justifyContent: 'flex-start', minHeight: 400}}>
         <View style={styles.switchContainer}>
           <LeagueTypeButton
             type="Public League"
             iconName="account-group"
-            active={publicLeague}
+            active={!privateLeague}
             toggleLeagueType={toggleLeagueType}
           />
           <LeagueTypeButton
@@ -77,9 +92,10 @@ const CreateLeague = ({navigation}) => {
               style={styles.itemIcon}
             />
             <TextInput
-              placeholder="League Name"
+              placeholder="League Name (Min 3 Letters)"
               style={styles.itemText}
               onChangeText={(text) => setLeagueName(text)}
+              multiline={false}
             />
           </View>
           {privateLeague && (
@@ -92,9 +108,11 @@ const CreateLeague = ({navigation}) => {
                   style={styles.itemIcon}
                 />
                 <TextInput
-                  placeholder="Password"
+                  placeholder="Password (6 Digits)"
                   style={styles.itemText}
                   onChangeText={(text) => setPassword(text)}
+                  maxLength={6}
+                  keyboardType={'number-pad'}
                 />
               </View>
               <View style={styles.formItem}>
@@ -105,9 +123,11 @@ const CreateLeague = ({navigation}) => {
                   style={styles.itemIcon}
                 />
                 <TextInput
-                  placeholder="Confirm Password"
+                  placeholder="Confirm Password (6 Digits)"
                   style={styles.itemText}
                   onChangeText={(text) => setConfirmPassword(text)}
+                  maxLength={6}
+                  keyboardType={'number-pad'}
                 />
               </View>
             </View>
@@ -118,7 +138,7 @@ const CreateLeague = ({navigation}) => {
             <Text style={styles.buttonText}>Create League</Text>
           </Pressable>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -159,7 +179,7 @@ const styles = ScaledSheet.create({
     width: '300@s',
     flexDirection: 'row',
     paddingHorizontal: '10@s',
-    paddingVertical: '15@s',
+    paddingVertical: '10@s',
     marginTop: '10@s',
     borderRadius: 10,
     alignItems: 'center',
@@ -171,5 +191,9 @@ const styles = ScaledSheet.create({
   },
   itemIcon: {
     paddingHorizontal: '10@s',
+  },
+  errorText: {
+    paddingLeft: '20@s',
+    paddingTop: '5@s',
   },
 });

@@ -1,27 +1,47 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
+import React, {useState} from 'react';
+import {Text, View, TextInput, Pressable} from 'react-native';
 import {scale, ScaledSheet} from 'react-native-size-matters';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import algoliasearch from 'algoliasearch';
 import {FlatList} from 'react-native-gesture-handler';
+import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const client = algoliasearch('AIN8R1SQGX', 'b9402ffc9ea88be4d4475861fc5d5dc9');
 const index = client.initIndex('false9_leagues');
 
-const SearchLeague = () => {
+const SearchLeague = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
   const [results, setResults] = useState([]);
   const [initializing, setInitializing] = useState(false);
 
+  const userLeagues = useSelector((state) => state.user.leagues);
+
+  const dispatch = useDispatch();
+
   const search = async (text) => {
     setInitializing(true);
     const response = await index.search(text, {
-      attributesToRetrieve: ['leagueName', 'teamCount', 'private'],
+      attributesToRetrieve: [
+        'objectID',
+        'leagueName',
+        'teamCount',
+        'privateLeague',
+      ],
       hitsPerPage: 50,
     });
 
     setInitializing(false);
-    setResults(response.hits);
+    setResults(
+      response.hits.filter((item) => !userLeagues.includes(item.objectID)),
+    );
+  };
+
+  const navigateToLeagueDetails = (id, privateLeague) => {
+    dispatch({type: 'UPDATE_LEAGUE_ID', payload: id});
+    dispatch({type: 'UPDATE_LEAGUE_TYPE', payload: privateLeague});
+
+    navigation.navigate('League Details');
   };
 
   return (
@@ -54,19 +74,23 @@ const SearchLeague = () => {
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index}
           renderItem={({item}) => (
-            <Pressable style={styles.listItem}>
-              <View style={styles.flexTwo}>
+            <Pressable
+              style={styles.listItem}
+              onPress={() =>
+                navigateToLeagueDetails(item.objectID, item.privateLeague)
+              }>
+              <View style={{flex: 2}}>
                 <Text style={[styles.alignStart, styles.itemText]}>
                   {item.leagueName}
                 </Text>
               </View>
-              <View style={styles.flexOne}>
+              <View style={{flex: 1}}>
                 <Text style={[styles.alignEnd, styles.itemText]}>
                   {item.teamCount} Teams
                 </Text>
               </View>
-              <View style={styles.flexOne}>
-                {item.private && (
+              <View style={{flex: 1, maxWidth: 50, alignItems: 'center'}}>
+                {item.privateLeague && (
                   <MaterialCommunityIcons
                     name="lock"
                     size={scale(15)}
@@ -89,12 +113,12 @@ const styles = ScaledSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: '10@s',
+    padding: '5@s',
     paddingHorizontal: '20@s',
   },
   formContainer: {
     alignItems: 'center',
-    marginTop: '10@s',
+    marginTop: '5@s',
     alignSelf: 'stretch',
   },
   listContainer: {
@@ -107,7 +131,7 @@ const styles = ScaledSheet.create({
     // width: '300@s',
     flexDirection: 'row',
     paddingHorizontal: '10@s',
-    paddingVertical: '15@s',
+    paddingVertical: '10@s',
     marginTop: '10@s',
     borderRadius: 10,
     alignItems: 'center',
@@ -147,14 +171,6 @@ const styles = ScaledSheet.create({
     fontSize: '12@s',
     paddingHorizontal: '5@s',
     // paddingLeft: '10@s',
-  },
-  flexTwo: {
-    flex: 2.5,
-    justifyContent: 'center',
-  },
-  flexOne: {
-    flex: 1,
-    justifyContent: 'center',
   },
   alignStart: {
     alignSelf: 'flex-start',

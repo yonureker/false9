@@ -14,19 +14,19 @@ const Bench = (props) => {
           flexDirection: 'row',
         }}>
         <View style={styles.container}>
-          <Text style={{top: 5}}>GK</Text>
+          <Text>GK</Text>
           <Player index={11} position="Goalkeeper" />
         </View>
         <View style={styles.container}>
-          <Text style={{top: 5}}>DF</Text>
+          <Text>DF</Text>
           <Player index={12} position="Defender" />
         </View>
         <View style={styles.container}>
-          <Text style={{top: 5}}>MID</Text>
+          <Text>MID</Text>
           <Player index={13} position="Midfielder" />
         </View>
         <View style={styles.container}>
-          <Text style={{top: 5}}>FW</Text>
+          <Text>FW</Text>
           <Player index={14} position="Forward" />
         </View>
       </View>
@@ -45,12 +45,12 @@ const styles = ScaledSheet.create({
   benchContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: '110@ms',
+    height: '120@ms',
     backgroundColor: '#ECECEC',
     borderTopLeftRadius: '10@ms',
     borderTopRightRadius: '10@ms',
     alignSelf: 'stretch',
-    maxHeight: '150@vs',
+    maxHeight: '175@vs',
   },
   benchHeaderContainer: {
     justifyContent: 'center',

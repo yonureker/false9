@@ -1,6 +1,6 @@
 import React from 'react';
 import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, batch} from 'react-redux';
 import {scale, ScaledSheet} from 'react-native-size-matters';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
@@ -10,13 +10,8 @@ const PlayerDetails = ({route, navigation}) => {
   const dispatch = useDispatch();
   const selectedIndex = useSelector((state) => state.selection.player);
 
-  const {
-    firstName,
-    lastName,
-    nationalTeam,
-    price,
-    id,
-  } = route.params.playerProfile;
+  const {firstName, lastName, nationalTeam, price, id} =
+    route.params.playerProfile;
 
   const {position} = route.params;
 
@@ -38,6 +33,7 @@ const PlayerDetails = ({route, navigation}) => {
     navigation.navigate('Select Player', {
       position: position,
       replacedPlayerPrice: price,
+      replacedPlayerClub: nationalTeam,
     });
   };
 
@@ -54,7 +50,7 @@ const PlayerDetails = ({route, navigation}) => {
   return (
     <View style={styles.profileContainer}>
       <View style={styles.playerDetailsItem}>
-        <Flag country={nationalTeam} width={scale(50)} height={scale(50)} />
+        <Flag country={nationalTeam} width={scale(100)} height={scale(100)} />
       </View>
       <Text style={styles.playerName}>
         {firstName} {lastName}

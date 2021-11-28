@@ -54,12 +54,9 @@ const squadReducer = (state = initialState, action) => {
     case 'UPDATE_BUDGET':
       return {
         ...state,
-        budget: {
-          ...state.budget,
-          items: {...state.budget.items, [action.budgetItem]: action.payload},
-        },
+        budget: action.payload,
       };
-    case 'UPDATE_DAILY_CLAIM':
+    case 'UPDATE_LAST_DAILY_CLAIM_DATE':
       return {
         ...state,
         budget: {

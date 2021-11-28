@@ -1,4 +1,4 @@
-const initialState = null;
+const initialState = {teamName: null};
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -6,6 +6,10 @@ const userReducer = (state = initialState, action) => {
       return action.payload;
     case 'RESET_USER_DATA':
       return null;
+    case 'UPDATE_USER_LEAGUES':
+      return {...state, leagues: action.payload};
+    case 'UPDATE_TEAM_NAME':
+      return {...state, teamName: action.payload};
     default:
       return state;
   }

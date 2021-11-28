@@ -1,15 +1,17 @@
 import React from 'react';
-import {StyleSheet, Text, View, Pressable} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {scale} from 'react-native-size-matters';
-import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
 const BudgetItem = (props) => {
   const {title, content, buttonText, onPress, type, budget, icon} = props;
 
+  // const image = icon === 'invite' ? inviteIcon : null
+
   return (
     <View style={styles.itemContainer}>
       <View style={[styles.container, styles.itemIconContainer]}>
-        <MaterialIcons size={45} name="login" />
+        <MaterialCommunityIcons size={45} name={icon} color="black" />
       </View>
       <View style={{flex: 5}}>
         <View style={styles.itemHeaderContainer}>
@@ -18,13 +20,11 @@ const BudgetItem = (props) => {
           </View>
           {budget[type] !== 0 && (
             <View>
-              <Text style={styles.itemBudget}>
-                + €{budget[type].toLocaleString()} added!
-              </Text>
+              <Text style={styles.itemBudget}>+ ${budget[type]} added!</Text>
             </View>
           )}
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', flex: 1}}>
           <View style={{flex: 6, padding: 5}}>
             <Text style={styles.itemDescription}>{content}</Text>
           </View>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   itemDescription: {
     fontFamily: 'LexendDeca-Regular',
-    color: 'gray',
+    // color: 'gray',
     fontSize: scale(10),
   },
   itemContainer: {
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#DDDDDD',
     minHeight: 100,
+    maxHeight: 110,
     borderRadius: 10,
     marginTop: 10,
     backgroundColor: 'white',
@@ -81,18 +82,23 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 2,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   button: {
     backgroundColor: '#EE6565',
     minWidth: 60,
     padding: 2,
     borderRadius: 5,
+    paddingBottom: 6
   },
   buttonText: {
     color: 'white',
     alignSelf: 'center',
     fontFamily: 'LexendDeca-Regular',
     fontSize: scale(12),
+  },
+  icon: {
+    width: '80%',
+    height: '80%',
   },
 });

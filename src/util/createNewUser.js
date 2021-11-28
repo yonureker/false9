@@ -1,6 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
+import rounds from '../util/Rounds';
 
-const createNewUser = async (user) => {
+const createNewUser = async (user, id) => {
   try {
     const batch = firestore().batch();
 
@@ -21,6 +22,8 @@ const createNewUser = async (user) => {
         Final: 0,
       },
       teamName: null,
+      referrerID: id,
+      referralAmount: 0,
     });
 
     const userRef = firestore().collection('users').doc(user.uid);
